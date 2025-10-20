@@ -1,0 +1,158 @@
+.layout {
+  display: grid;
+  height: 100vh;
+
+  background: #f4f4f9; 
+  color: #2c2c2c; 
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
+  grid-template-areas:
+    "header header"
+    "nav nav"
+    "aside main"
+    "footer footer";
+
+  grid-template-rows: 80px 100px 1fr 120px;
+  grid-template-columns: 250px 1fr;
+  gap: 15px;
+}
+
+.header {
+  grid-area: header;
+  display: flex;
+  align-items: center;        
+  justify-content: center;    
+  position: relative; 
+  background: #ffffff;        
+}
+
+.header-left {
+  position: absolute;         
+  left: 20px;                
+}
+
+.header-right h1 {
+  font-size: 40px;            
+  margin: 0;                  
+  text-align: center;  
+  color: #d64545;
+  letter-spacing: 2px;       
+}
+
+.logo {
+  width: 100px;   
+  height: auto;   
+}
+
+.nav {
+  grid-area: nav;
+  
+}
+
+.nav ul {
+  list-style: none;
+  display: flex;
+  justify-content: space-around;
+}
+
+.nav ul li {
+  text-decoration: none;
+  margin-bottom: 70px;
+}
+
+.nav ul li a {
+  font-size: 30px;
+  text-decoration: none;
+  color: #2c2c2c;
+}
+
+.barra-lateral {
+  grid-area: aside;
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 10px;
+  
+}
+
+.barra-lateral ul {
+  list-style: none;
+  padding: 0;
+}
+
+.barra-lateral ul li {
+  margin-bottom: 70px;
+  text-decoration: none;
+}
+
+.barra-lateral ul li a{
+  margin-bottom: 70px;
+  font-size: 20px; 
+  font-size: 18px; 
+  text-decoration: none;
+  color: #2c2c2c;
+  transition: color 0.3s ease;
+}
+
+.barra-lateral {
+  grid-area: aside;
+ 
+}
+
+.main {
+  grid-area: main;
+  padding: 20px;
+}
+
+.product-container {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.product-card {
+  width: 200px;
+  text-align: center;
+  text-decoration: none;
+  margin: 10px 60px 10px;
+}
+
+.product-card img {
+  width: 80%;
+  height: auto;
+  margin: 10px 15px 10px;
+  display: block;
+}
+
+.footer {
+  grid-area: footer;
+  grid-area: footer;
+  background: #ffffff;
+  padding: 20px 0;
+}
+
+.footer-content {
+  display: flex;
+  justify-content: center;
+  gap: 200px;
+  
+}
+
+.footer-section{
+  font-size: 20px; 
+}
+
+.footer-section ul li {
+    list-style: none;
+    font-size: 15px; 
+    color: #333;
+}
+
+/* 
+
+Preguntar por el header necesito el nombre centrado y la imagen en la izq
+Preguntar por hacer más grande los encabezados del footer y no las listas
+Preguntar por poner en cuadrilla el main
+
+*/
+

@@ -1,0 +1,298 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+:root {
+  --primary-color: #000000;      /* Color principal - morado oscuro */
+  --secondary-color: #a837ff;    /* Color secundario - azul */
+  --accent-color: #ff00e6;       /* Color de acento - rosa */
+  --dark-bg: #232335;            /* Fondo oscuro */
+  --light-bg: #c5e2f5;           /* Fondo claro */
+  --card-bg: #c5e2f5;            /* Fondo de tarjetas */
+  --text-light: #c5e2f5;         /* Texto claro */
+  --text-dark: #16213e;          /* Texto oscuro */
+  --spacing: 1rem;               /* Espacio interior por defecto */
+  --gap: 0.5rem;                 /* Separación entre elementos */
+  --card-radius: 12px;           /* Borde redondeado */
+  --transition: 0.3s ease;       /* Animaciones suaves */
+  --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);  /* Sombra elegante */
+}
+
+.layout{
+display: grid;
+height: 100vh;
+background: #30014e;
+
+grid-template-areas:
+"header header"
+"nav1 nav1"
+"nav2 main"
+"footer footer";
+
+grid-template-rows: auto auto 1fr auto;
+grid-template-columns: 0.12fr 1fr;
+ gap: 3px;
+}
+.header{
+    grid-area: header;
+    border: none;
+    background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+    display: flex;
+    justify-content: center; /* Centramos el contenido principal (el título) */
+    align-items: center;
+    padding: 0.5rem 2rem;
+    box-shadow: var(--box-shadow);
+    position: relative; /* Necesario para posicionar el logo de forma absoluta */
+}
+
+.header-left{
+    position: absolute; /* Lo sacamos del flujo normal */
+    left: 2rem; /* Lo alineamos con el padding del header */
+    top: 50%;
+    transform: translateY(-50%);
+    width: 60px;
+    height: 65px;
+    display: flex;
+}
+.header-left img {
+    width: 60%;
+    height: auto;
+    object-fit: contain;
+}
+
+
+
+.header-right {
+  color: var(--text-light);
+  font-size: 100%;
+  text-align: center;
+  margin: 0;
+  padding: 0;
+}
+
+.header-right h1{
+    text-shadow: 1px 1px 2px rgb(0, 255, 26);
+}
+
+.nav1{
+    grid-area: nav1;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    border: none;
+    background: #66606f;
+    text-align: center;
+    justify-content: center;
+}
+.nav1 ul {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+    list-style: none;
+    margin: 0;
+    padding: 0.8rem 0;
+}
+
+.nav1 ul li {
+    margin-bottom: 0; 
+}
+
+.nav1 ul li a {
+  color: var(--text-light);
+  text-decoration: none;
+  font-weight: 50;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  transition: var(--transition);
+}
+.nav1 ul li a:hover {
+  background-color: rgba(255, 255, 255, 0.15);
+  transform: translateY(-2px);
+}
+
+.nav2{
+    grid-area: nav2;
+    border: 1px solid rgb(65, 31, 37);
+    background: var(--light-bg);
+    justify-content: center;
+    font-size: 15px;
+    border: none;
+    border-radius: 0 0 15px 0;
+}
+
+
+.nav2 ul {
+    list-style: none;
+    padding: 15px; /* Espacio a la izquierda */
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* Alinea los elementos a la izquierda */
+    gap: 10px; /* Espacio entre los links */
+}
+
+.nav2 ul li {
+    margin-bottom: 15%; /* Elimina el margen excesivo */
+    width: 100%; /* Asegura que los elementos ocupen todo el ancho disponible */
+  }
+
+  .nav2 ul li a {
+    color: var(--text-dark);
+    text-decoration: none;
+    display: block;
+    border-radius: 6px;
+    transition: var(--transition);
+    font-size: 0.95rem;
+}
+
+.nav2 ul li a:hover {
+  background-color: var(--secondary-color);
+  color: var(--text-light);
+}
+
+
+.main {
+    grid-area: main;
+    border: none;
+    border-radius: 12px 0 0 0;
+    align-items: center;
+    background: #a4adae;
+    overflow-y: auto;
+    height: 100%;
+    min-height: 0;
+    box-sizing: border-box;
+    width: 100%;
+    padding: var(--spacing);
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centra el grid horizontalmente */
+}
+
+
+.product-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 1.8rem;
+  align-items: start;   
+  justify-items: center;
+  width: 100%;
+  max-width: 95%;
+  margin: 0 auto;
+  justify-content: center;
+  place-content: start center;
+  place-items: center;
+}
+
+
+
+.product-card {
+  width: 220px;
+  min-height: 50px;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  text-decoration: none;
+  margin: 10px 15px;
+  border: none;
+  border-radius: var(--card-radius);
+  background-color: var(--card-bg);
+  box-shadow: var(--box-shadow);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  height: 100%;
+  padding: 1px;
+  overflow: hidden;
+}
+.product-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(105, 65, 114, 0.84);
+}
+
+
+.product-card img {
+  width: 70%;      /* Ajusta el ancho según lo que necesites */
+  height: auto;      /* Mantiene la proporción */
+  display: block;
+  margin: 0 auto 1rem;    /* Centra la imagen en la tarjeta */
+}
+
+.product-card:hover img {
+  transform: scale(1.05);
+}
+
+.product-card-body {
+
+  display: flex;
+  flex-direction: column;
+  flex: 1;                 /* Se expande para empujar el botón abajo */
+  padding: var(--gap);
+}
+
+.product-card h2 {
+    font-size: 95%;
+    color: var(--accent-color);
+    font-weight: bold;
+    margin: 0.5rem 0;
+    font-size: 1.1rem;
+}
+
+.product-card p { 
+    font-size: 0.85rem;
+    color: #555;
+    margin-top: 0.5rem
+}
+
+.footer {
+    grid-area: footer;
+    border: none;
+    background: var(--dark-bg);
+    gap: 20px;
+    height: auto;
+    box-sizing: border-box;
+    color: var(--text-light);
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.2);
+}
+.footer-content{
+    display: flex;
+    justify-content: space-around;
+    gap: 5%;  
+    border: none;
+    background: var(--dark-bg);
+    flex-wrap: wrap;
+    padding: 0 1rem;
+}
+.footer-content ul{
+  list-style: none;
+  text-align: left;
+  padding-left: 0;
+}
+
+.footer-content ul li {
+  margin-bottom: 8px;
+}
+
+.footer-content a {
+  color: #b8c1ec;
+  text-decoration: none;
+  transition: var(--transition);
+}
+
+.footer-content a:hover {
+  color: var(--accent-color);
+  text-decoration: underline;
+}
+.footer-section h4 {
+  color: var(--text-light);
+  margin-bottom: 15px;
+}
