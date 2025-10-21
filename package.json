@@ -16,6 +16,8 @@
     "@mui/icons-material": "^7.3.4",
     "@mui/material": "^7.3.4",
     "bootstrap": "^5.3.8",
+    "express": "^5.1.0",
+    "mongoose": "^8.19.2",
     "react": "^19.1.1",
     "react-bootstrap": "^2.10.10",
     "react-bootstrap-icons": "^1.11.6",
@@ -31,6 +33,20 @@
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.22",
     "globals": "^16.4.0",
+    "nodemon": "^3.1.10",
     "vite": "^7.1.7"
-  }
+  },
+  "description": "This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.",
+  "main": "eslint.config.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Lautaro-Espinosa015/Hub-Proyectos-Grupo2-FPW.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Lautaro-Espinosa015/Hub-Proyectos-Grupo2-FPW/issues"
+  },
+  "homepage": "https://github.com/Lautaro-Espinosa015/Hub-Proyectos-Grupo2-FPW#readme"
 }
