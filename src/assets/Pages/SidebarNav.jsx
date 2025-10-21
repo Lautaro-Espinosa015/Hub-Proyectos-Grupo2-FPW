@@ -14,7 +14,7 @@ const navItems = [
       { text: 'Proyecto HTML : Espinosa Lautaro Eduardo', to: '/Proyecto01_Espinosa' },
       { text: 'Proyecto HTML : Cussi Walter Leonel', to: '/Proyecto01_Cussi' },
       { text: 'Proyecto HTML : Morales Pappalardo Mauro Francisco', to: '/Proyecto01_Morales' },
-      { text: 'Proyecto HTML : Estrada Brian Alexis', to: '/Proyecto01_Estrada' },
+      { text: 'Proyecto HTML : Estrada Luis Brian Gabriel', to: '/Proyecto01_Estrada' },
       { text: 'Proyecto HTML : Silva Melani Isabel', to: '/Proyecto01_Silva' },
     ],
   },   
