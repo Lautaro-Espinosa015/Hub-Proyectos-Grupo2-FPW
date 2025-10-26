@@ -10,6 +10,7 @@ import PetRegistry from './assets/RegistroMascotas/PetRegistry';
 import Proyecto01 from './assets/Pages/Proyecto01';
 import Proyecto4 from './assets/Pages/Proyecto4';
 import Formulario from './assets/components/formulario.jsx';
+import quizz from './assets/components/quiz.jsx';
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
         <Route path='pet-registry' element={<PetRegistry />} />
         <Route path='proyecto4' element={<Proyecto4 />} />
         <Route path='formulario' element={<Formulario />} />
+        <Route path='quizz' element={<quizz />} />
         <Route path='*' element={<Error />} />
       </Route>
     </Routes>
