@@ -1,0 +1,57 @@
+/* Estilo oscuro para los ejercicios del Proyecto 2 */
+
+:root {
+  --bg-color: #171d25;
+  --container-bg: #212832;
+  --text-color: #dcdedf;
+  --primary-color: #66c0f4;
+  --border-color: #3a3f4b;
+}
+
+body {
+  font-family: 'sans-serif';
+  background: var(--bg-color);
+  color: var(--text-color);
+  min-height: 100vh;
+  margin: 0;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+h1 {
+  color: var(--primary-color);
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+button {
+  padding: 12px 24px;
+  font-size: 16px;
+  cursor: pointer;
+  border: none;
+  border-radius: 8px;
+  background: var(--primary-color);
+  color: var(--bg-color);
+  font-weight: 700;
+  transition: opacity 0.2s;
+}
+
+button:hover {
+  opacity: 0.9;
+}
+
+.resultado {
+  margin-top: 1.5rem;
+  padding: 1.5rem;
+  background: var(--container-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  width: 100%;
+  max-width: 420px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+  text-align: center;
+}

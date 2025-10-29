@@ -1,0 +1,95 @@
+.colores-container {
+  /* --- Variables de Color para Personalización (mapeadas a tokens globales) --- */
+  --colores-bg-gradient-start: var(--accent-start, #5f009e);
+  --colores-bg-gradient-end: var(--accent-end, #a80077);
+  --colores-text-color: var(--text-color, #ffffff);
+  --colores-shadow-color: var(--shadow-color, rgba(0, 0, 0, 0.2));
+  --colores-btn-primary-bg: var(--primary-color, #4CAF50);
+  --colores-btn-primary-hover-bg: var(--primary-hover-color, #45a049);
+  --colores-btn-danger-bg: var(--danger-color, #c0392b);
+  --colores-btn-danger-hover-bg: var(--danger-hover-color, #a93226);
+  --colores-box-border: rgba(255, 255, 255, 0.5);
+
+  padding: 20px;
+  text-align: center;
+  background: linear-gradient(135deg, var(--colores-bg-gradient-start), var(--colores-bg-gradient-end));
+  color: var(--colores-text-color);
+  border-radius: 12px;
+  margin: 20px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+  text-shadow: 1px 1px 3px var(--colores-shadow-color);
+}
+
+.botones-colores-container {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin: 20px 0;
+}
+.color-box {
+  width: 60px;
+  height: 60px;
+  border: 2px solid var(--colores-box-border);
+  margin: 5px;
+  border-radius: 8px;
+  transition: transform 0.2s ease;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.color-box:hover {
+  transform: scale(1.1);
+}
+
+.cambiar-colores-btn {
+  padding: 10px 20px;
+  background-color: var(--colores-btn-primary-bg);
+  color: var(--colores-text-color);
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  transition: all 0.3s ease;
+}
+
+.cambiar-colores-btn:hover {
+  background-color: var(--colores-btn-primary-hover-bg);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px var(--colores-shadow-color);
+}
+
+.botones-resultado {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.cambiar-colores-btn.danger-btn {
+  background-color: var(--colores-btn-danger-bg);
+}
+.cambiar-colores-btn.danger-btn:hover {
+  background-color: var(--colores-btn-danger-hover-bg);
+}
+
+/* --- Media Query para Responsividad --- */
+/* Estilos que se aplicarán en pantallas con un ancho máximo de 480px (móviles) */
+@media (max-width: 480px) {
+  .colores-container {
+    margin: 10px;
+    padding: 15px;
+  }
+
+  .color-box {
+    width: 50px;
+    height: 50px;
+  }
+
+  .cambiar-colores-btn {
+    font-size: 14px;
+    padding: 8px 16px;
+  }
+}

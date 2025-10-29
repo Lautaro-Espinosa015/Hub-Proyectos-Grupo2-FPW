@@ -1,0 +1,20 @@
+.saludo-container {
+  /* Usa tokens globales con fallbacks locales */
+  background: linear-gradient(135deg, var(--accent-start, #8e2de2), var(--accent-end, #4a00e0));
+  padding: 20px;
+  margin: 20px;
+  border-radius: 12px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: var(--text-color, #ffffff);
+  text-align: center;
+  box-shadow: 0 8px 16px var(--shadow-color, rgba(0,0,0,0.3));
+  text-shadow: 1px 1px 3px var(--shadow-color, rgba(0,0,0,0.2));
+}
+
+/* --- Media Query para Responsividad --- */
+@media (max-width: 480px) {
+  .saludo-container {
+    margin: 10px;
+    padding: 15px;
+  }
+}

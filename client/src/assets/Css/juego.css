@@ -1,0 +1,101 @@
+.juego-container {
+  /* Uso de variables globales con fallbacks locales */
+  padding: 20px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, var(--accent-start, #6a11cb) 0%, var(--accent-end, #2575fc) 100%);
+  color: var(--text-color, white);
+  text-align: center;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  box-shadow: 0 8px 16px var(--shadow-color, rgba(0,0,0,0.3));
+}
+
+.juego-container h1 {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+  text-shadow: 2px 2px 4px var(--juego-shadow-color);
+}
+
+.juego-container p {
+  font-size: 1.1rem;
+  margin-bottom: 1.5rem;
+}
+
+.input-section {
+  margin-top: 20px;
+  display: flex;
+  flex-wrap: wrap; /* Permite que los elementos se apilen en pantallas pequeñas */
+  justify-content: center; /* Centra los elementos cuando se apilan */
+  gap: 10px;
+  align-items: center;
+}
+
+.number-input {
+  padding: 8px 10px;
+  border: 1px solid var(--border-color, #cccccc);
+  border-radius: 6px;
+  width: 100%; /* Ocupa el ancho disponible */
+  max-width: 200px; /* Pero no más de 200px en pantallas grandes */
+  font-size: 16px;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.number-input:focus {
+  outline: none;
+  border-color: var(--input-focus-border, #3b82f6);
+  box-shadow: 0 0 8px rgba(59,130,246,0.5);
+}
+
+.btn {
+  padding: 10px 20px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.primary-btn {
+  background-color: var(--primary-color, #3b82f6);
+  color: var(--text-color, white);
+}
+.primary-btn:hover {
+  background-color: var(--primary-hover-color, #2563eb);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px var(--shadow-color, rgba(0,0,0,0.2));
+}
+.danger-btn {
+  background-color: var(--danger-color, #ef4444);
+  color: var(--text-color, white);
+}
+.danger-btn:hover {
+  background-color: var(--danger-hover-color, #dc2626);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px var(--shadow-color, rgba(0,0,0,0.2));
+}
+
+.feedback {
+  margin-top: 16px;
+  min-height: 40px; /* evita saltos de layout cuando aún no hay mensaje */
+  font-size: 1.1rem;
+  font-weight: 500;
+}
+
+/* --- Media Query para Responsividad --- */
+@media (max-width: 480px) {
+  .juego-container {
+    padding: 15px;
+    margin: 10px;
+  }
+
+  .juego-container h1 {
+    font-size: 1.5rem;
+  }
+
+  .btn {
+    padding: 8px 15px;
+    font-size: 0.9rem;
+  }
+}

@@ -1,0 +1,11 @@
+/* Variables globales para los ejercicios estáticos del Proyecto02
+   Este archivo centraliza colores para que cambiar el tema sea trivial.
+   Se importa desde los archivos CSS en public/Proyecto02/*. */
+
+:root {
+  --bg-color: #171d25;
+  --container-bg: #212832;
+  --text-color: #09ca49;
+  --primary-color: #66c0f4;
+  --border-color: #3a3f4b;
+}
