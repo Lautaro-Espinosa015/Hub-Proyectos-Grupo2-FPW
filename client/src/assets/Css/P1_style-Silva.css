@@ -1,0 +1,153 @@
+/* Layout base */
+.layout {
+  display: grid;
+  height: 100vh;
+  grid-template-areas:
+    "header header"
+    "topnav topnav"
+    "nav    main"
+    "footer footer";
+  grid-template-columns: 250px 1fr;
+  grid-template-rows: 80px auto 1fr 140px;
+  gap: 10px;
+  background-color: #121212;
+  color: #f0f0f0;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+/* Header */
+.header {
+  grid-area: header;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+}
+.header-left img {
+  width: 60px;     /* Tamaño reducido del logo */
+  height: auto;    /* Mantiene proporción original */
+  margin-right: 10px;
+}
+
+
+.header h1 {
+  color: #00ffff;
+  font-size: 1.8em;
+  text-shadow: 1px 1px 3px #000;
+}
+.header p {
+  color: #cccccc;
+  font-style: italic;
+  text-shadow: 1px 1px 2px #000;
+}
+
+/* Menú horizontal */
+.top-nav {
+  grid-area: topnav;
+  background-color: #1e1e1e;
+  padding: 10px 0;
+}
+.top-nav ul {
+  display: flex;
+  justify-content: center;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.top-nav li {
+  margin: 0 15px;
+}
+.top-nav a {
+  text-decoration: none;
+  color: #4db8ff;
+  font-weight: bold;
+  text-shadow: 1px 1px 2px #000;
+}
+
+/* Menú vertical */
+.nav {
+  grid-area: nav;
+  background-color: #1a1a1a;
+  padding: 10px;
+}
+.nav ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.nav li {
+  margin-bottom: 15px;
+}
+.nav a {
+  text-decoration: none;
+  color: #66ff66;
+  font-weight: bold;
+  text-shadow: 1px 1px 2px #000;
+}
+
+/* Main y productos */
+.main {
+  grid-area: main;
+  padding: 10px;
+}
+.product-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+}
+.product-card {
+  width: 200px;
+  text-align: center;
+  text-decoration: none;
+  background-color: #1f1f1f;
+  border: 1px solid #555;
+  border-radius: 10px;
+  padding: 10px;
+}
+.product-card img {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+}
+.product-card h2 {
+  color: #00ffff;
+  font-weight: bold;
+  font-size: 1.1em;
+  text-shadow: 1px 1px 2px #000;
+}
+.product-card p {
+  color: #ffffff;
+  font-weight: bold;
+  font-size: 1em;
+}
+
+/* Footer */
+.footer {
+  grid-area: footer;
+  background-color: #1c1c1c;
+  padding: 20px;
+}
+.footer-content {
+  display: flex;
+  justify-content: space-around;
+}
+.footer-section h4 {
+  color: #ffffff;
+  text-shadow: 1px 1px 2px #000;
+}
+.footer-section ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.footer-section li {
+  margin-bottom: 6px;
+}
+.footer-section a {
+  text-decoration: none;
+  color: #4db8ff;
+  font-weight: bold;
+  text-shadow: 1px 1px 2px #000;
+}
+

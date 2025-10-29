@@ -1,0 +1,103 @@
+body {
+  margin: 0;
+  font-family: "Poppins", sans-serif;
+  background-color: #e0f2fe; 
+  color: #333;
+}
+
+
+.quiz-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+.quiz-box {
+  background-color: #ffffff;
+  padding: 30px;
+  border-radius: 20px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  width: 90%;
+  max-width: 420px;
+  text-align: center;
+  transition: transform 0.2s ease-in-out;
+}
+
+.quiz-box:hover {
+  transform: scale(1.02);
+}
+
+.quiz-question {
+  font-size: 1.2rem;
+  margin: 15px 0 25px 0;
+}
+
+.option-btn {
+  display: block;
+  background-color: #bfdbfe; 
+  border: none;
+  color: #111827;
+  padding: 10px;
+  margin: 8px 0;
+  width: 100%;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.25s ease;
+}
+
+.option-btn:hover {
+  background-color: #93c5fd;
+}
+
+/* ====== Resultado ====== */
+.result-box h2 {
+  font-size: 1.8rem;
+  margin-bottom: 10px;
+}
+
+.result-box p {
+  font-size: 1.1rem;
+  margin: 5px 0;
+}
+
+/* ====== Mensaje de bloqueo ====== */
+.quiz-box p[style] {
+  color: gray;
+  font-size: 0.95rem;
+}
+
+/* ====== Botón de reinicio (en caso de habilitarlo) ====== */
+.restart-btn {
+  background-color: #3b82f6;
+  color: white;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 1rem;
+  margin-top: 15px;
+  transition: background-color 0.2s ease;
+}
+
+.restart-btn:hover {
+  background-color: #2563eb;
+}
+
+/* ====== Animación sutil ====== */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.quiz-box {
+  animation: fadeIn 0.4s ease-in-out;
+}

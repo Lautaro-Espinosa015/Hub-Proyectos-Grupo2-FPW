@@ -1,0 +1,79 @@
+/* === Paleta de Colores Global === */
+:root {
+  --main-bg-dark: #1b2838;       /* Fondo principal oscuro (azul muy oscuro) */
+  --main-bg-content: #171d25;   /* Fondo para el área de contenido */
+  --header-bg: #171a21;         /* Fondo para la cabecera */
+  --sidebar-bg: #212832;       /* Fondo para la barra lateral */
+  --text-primary: #dcdedf;      /* Color de texto principal (casi blanco) */
+  --text-secondary: #8f98a0;    /* Color de texto secundario (gris claro) */
+  --link-color: #66c0f4;        /* Color para enlaces y elementos activos (azul claro) */
+  --link-hover-color: #ffffff;  /* Color para enlaces al pasar el mouse */
+}
+/* === Layout === */
+.app-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.page-content {
+  flex-grow: 1;
+  padding: 2rem;
+  background-color: var(--main-bg-content);
+  overflow-y: auto; /* Única área con scroll vertical */
+}
+
+
+/* === MainHeader === */
+.main-header {
+  background-color: var(--header-bg);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+}
+
+.main-header-brand {
+  color: var(--steam-text);
+  font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+}
+
+.group-icon {
+  font-size: 1.8rem;
+  margin-right: 0.75rem;
+  color: var(--link-color);
+}
+
+.main-header-link {
+  color: var(--text-primary);
+  margin: 0 1rem;
+  transition: color 0.2s;
+}
+
+.main-header-link:hover {
+  color: var(--link-hover-color);
+}
+
+
+/* === SidebarNav === */
+.sidebar-container {
+  width: 350px; /* Ajustado para coincidir con el 'sx' de SidebarNav.jsx */
+  flex-shrink: 0; /* Evita que la sidebar se encoja */
+  background-color: var(--sidebar-bg);
+  border-right: 1px solid rgba(0, 0, 0, 0.3);
+  padding-top: 1rem;
+}
+
+.sidebar-link {
+  color: var(--text-primary);
+  padding: 0.75rem 1.5rem;
+  text-decoration: none;
+  display: block;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.sidebar-link:hover,
+.sidebar-link.active {
+  background-color: rgba(102, 192, 244, 0.1);
+  color: var(--link-color);
+  text-decoration: none;
+}
