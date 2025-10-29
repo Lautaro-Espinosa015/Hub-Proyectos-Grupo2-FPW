@@ -1,5 +1,6 @@
 import React from "react";
 import JuegoEstrella from "./JuegoEstrella";
+import JuegoVerbosD from "../components/JuegoVerbosD";
 
 export default function Games() {
   return (
@@ -7,6 +8,7 @@ export default function Games() {
       <h1>Mini-juegos</h1>
       <div style={{ marginTop: 16 }}>
        <JuegoEstrella />
+       <JuegoVerbosD/>
       </div>
     </div> 
   );
