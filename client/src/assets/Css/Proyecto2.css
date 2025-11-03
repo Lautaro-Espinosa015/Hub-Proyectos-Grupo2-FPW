@@ -1,4 +1,13 @@
 /* Estilos para el contenedor de Proyecto 2 */
+.proyecto2-container {
+  display: flex;
+  flex-direction: column;
+  /* Usamos calc() para restar la altura de la cabecera y el padding.
+     Esto le da una altura fija y predecible al contenedor,
+     solucionando el problema del iframe recortado. */
+  height: calc(100vh - 70px - 4rem); /* 100vh - header_height - page-content_padding */
+}
+
 .proyecto2-container h2 {
   color: var(--text-primary);
   border-bottom: 2px solid var(--link-color);
@@ -33,25 +42,39 @@
   border-right: none;
 }
 
-.ejercicio-tab:hover {
+.ejercicio-tab:hover,
+.ejercicio-tab:focus-visible { /* Mejora de accesibilidad para teclado */
   background-color: rgba(255, 255, 255, 0.05);
   color: var(--text-primary);
+  outline: none; /* Quitamos el outline por defecto para poner uno custom si se quiere */
 }
 
 .ejercicio-tab.active {
-  background-color: var(--link-color);
-  color: var(--main-bg-dark);
+  background-color: var(--primary-color, #66c0f4); /* Usamos el azul primario */
+  color: var(--bg-color, #171d25); /* Texto oscuro para contraste */
   font-weight: 700;
 }
 
 .iframe-container {
   border-radius: 8px;
   overflow: hidden; /* Asegura que el iframe respete el borde redondeado */
-  height: 60vh; /* Altura relativa a la ventana */
+  flex-grow: 1; /* Hace que el contenedor del iframe ocupe el espacio restante */
+  border: 1px solid rgba(255, 255, 255, 0.1); /* Borde sutil para consistencia */
 }
 
 .iframe-container iframe {
   width: 100%;
   height: 100%;
   border: none;
+}
+
+/* --- Media Query para Responsividad --- */
+@media (max-width: 768px) {
+  .ejercicios-nav {
+    flex-direction: column; /* Apila los botones verticalmente */
+  }
+  .ejercicio-tab {
+    border-right: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
 }
