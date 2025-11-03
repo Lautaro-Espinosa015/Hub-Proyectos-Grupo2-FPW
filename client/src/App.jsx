@@ -11,6 +11,7 @@ import Proyecto01 from './assets/Pages/Proyecto01';
 import Proyecto4 from './assets/Pages/Proyecto4';
 import Formulario from './assets/components/Proyecto5/formulario.jsx';
 import quizz from './assets/components/quiz.jsx';
+import Login from './assets/Pages/Login.jsx';
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
         <Route path='proyecto4' element={<Proyecto4 />} />
         <Route path='formulario' element={<Formulario />} />
         <Route path='quizz' element={<quizz />} />
+        <Route path='login' element={<Login />} />
         <Route path='*' element={<Error />} />
       </Route>
     </Routes>

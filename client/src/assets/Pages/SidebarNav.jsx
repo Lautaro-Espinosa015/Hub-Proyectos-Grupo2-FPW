@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { Box, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Menu, MenuItem } from '@mui/material';
-import { Home, Folder, Code, CodeSharp, Pets, People, SportsEsports, ArrowDropDown, Add } from '@mui/icons-material';
+import { Home, Folder, Code, CodeSharp, Pets, People, SportsEsports, ArrowDropDown, Add, Login, Logout } from '@mui/icons-material';
+
+import { useAutorizacion } from '../components/Contexts/AutorizacionContext';
+
 
 // 1. Estructura de datos limpia y sin duplicados
 const navItems = [
@@ -46,7 +49,9 @@ const navItems = [
   },
 ];
 
-function SidebarNav() {
+function SidebarNav({ onLoginClick }) {
+  const { isLoggedIn, currentUser, logout } = useAutorizacion();
+
   const [anchorEl, setAnchorEl] = useState(null);
   const [openMenuText, setOpenMenuText] = useState('');
 
@@ -129,6 +134,32 @@ function SidebarNav() {
           </ListItem>
           );
         })}
+
+
+        {/* Separador visual antes del botón de login/logout */}
+        <Box sx={{ borderLeft: '1px solid', borderColor: 'divider', mx: 1 }} />
+
+        {/* 4. Botón dinámico de Login/Logout */}
+        {isLoggedIn ? (
+          <ListItem disablePadding>
+            <ListItemButton onClick={onLoginClick} sx={{ py: 1, px: 2, flexDirection: 'column', minWidth: '120px', textAlign: 'center' }}>
+              <ListItemIcon sx={{ minWidth: 'auto', justifyContent: 'center' }}>
+                <Logout />
+              </ListItemIcon>
+              <ListItemText primary={`Salir (${currentUser.username})`} primaryTypographyProps={{ variant: 'caption', noWrap: true }} />
+            </ListItemButton>
+          </ListItem>
+        ) : (
+          <ListItem disablePadding>
+            <ListItemButton onClick={onLoginClick} sx={{ py: 1, px: 2, flexDirection: 'column', minWidth: '120px', textAlign: 'center' }}>
+              <ListItemIcon sx={{ minWidth: 'auto', justifyContent: 'center' }}>
+                <Login />
+              </ListItemIcon>
+              <ListItemText primary="Iniciar Sesión" primaryTypographyProps={{ variant: 'caption', noWrap: true }} />
+            </ListItemButton>
+          </ListItem>
+        )}
+
       </List>
     </Box>
   );

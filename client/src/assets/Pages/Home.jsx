@@ -10,14 +10,24 @@ import {
   CardContent,
   CardMedia,
   Chip,
-  Paper
+  Paper,
+  Dialog,
+  DialogTitle,
+  DialogContent
 } from '@mui/material';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import MemoryIcon from '@mui/icons-material/Memory';
 import CodeIcon from '@mui/icons-material/Code';
 import PetsIcon from '@mui/icons-material/Pets';
+import { useState } from 'react';
+import Login from './Login';
 
 function Home() {
+  const [openLogin, setOpenLogin] = useState(false);
+
+  const handleLoginClose = () => {
+    setOpenLogin(false);
+  };
   return (
     <Box>
       {/* 1. Sección Principal ("Hero Section") */}
@@ -179,8 +189,18 @@ function Home() {
           </Button>
         </Container>
       </Box>
+
+
+            {/* Modal de Login */}
+      <Dialog open={openLogin} onClose={handleLoginClose} maxWidth="xs" fullWidth>
+        <DialogTitle sx={{ textAlign: 'center', pb: 0 }}>Acceso de Usuario</DialogTitle>
+        <DialogContent><Login onClose={handleLoginClose} /></DialogContent>
+      </Dialog>
     </Box>
   );
+
+
+  
 }
 
 export default Home;
