@@ -4,6 +4,9 @@ import { PeopleFill } from 'react-bootstrap-icons';
 import '../Css/HubStyles.css';
 
 function MainHeader() {
+ const { isLoggedIn } = useAutorizacion();
+
+
   return (
     <Navbar className="main-header" variant="dark" expand="lg">
       <Container fluid>
