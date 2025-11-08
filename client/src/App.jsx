@@ -1,18 +1,19 @@
 import { Routes, Route } from 'react-router-dom';
-import Layout from './assets/Pages/Layout';
-import Home from './assets/Pages/Home';
+import Layout from './Pages/Layout';
+import Home from './Pages/Home';
 import 'bootstrap/dist/css/bootstrap.min.css';
 //import ProyectoHtml1 from './assets/Pages/ProyectoHtml1.jsx';
-import Games from './assets/Pages/Games';
-import AboutUs from './assets/Pages/AboutUs';
-import Error from './assets/Pages/Error';
-import Proyecto2 from './assets/Pages/Proyecto2';
-import PetRegistry from './assets/Pages/PetRegistry.jsx';
-import Proyecto01 from './assets/Pages/Proyecto01';
-import Proyecto4 from './assets/Pages/Proyecto4';
-import Formulario from './assets/components/Proyecto5/formulario.jsx';
-import JuegoMemoria from './assets/Pages/JuegoMemoria.jsx';
-import Login from './assets/Pages/Login.jsx';
+import Games from './Pages/Games';
+import AboutUs from './Pages/AboutUs';
+import Error from './Pages/Error';
+import Proyecto2 from './Pages/Proyecto2';
+import PetRegistry from './Pages/PetRegistry.jsx';
+import Proyecto01 from './Pages/Proyecto01';
+import Proyecto4 from './Pages/Proyecto4';
+import Formulario from './components/Proyecto5/formulario.jsx';
+import JuegoMemoria from './Pages/JuegoMemoria.jsx';
+import Login from './Pages/Login.jsx';
+import ArrastraLaImagen from './components/EnglishGames/ArrastraLaImagen.jsx';
 
 function App() {
   return (
@@ -29,7 +30,8 @@ function App() {
         <Route path='proyecto2' element={<Proyecto2 />} />
         <Route path='petRegistry' element={<PetRegistry />} />
         <Route path='proyecto4' element={<Proyecto4 />} />
-   <Route path='juegomemoria' element={<JuegoMemoria />} />
+        <Route path='juegomemoria' element={<JuegoMemoria />} />
+        <Route path='ArrastraLaImagen' element={<ArrastraLaImagen />} />
         <Route path='formulario' element={<Formulario />} />
      
         <Route path='login' element={<Login />} />
