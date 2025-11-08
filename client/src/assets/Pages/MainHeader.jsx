@@ -1,11 +1,12 @@
 import React from 'react';
 import { Navbar, Nav, Container } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import { PeopleFill } from 'react-bootstrap-icons';
+import { PeopleFill, PersonCircle } from 'react-bootstrap-icons';
 import '../Css/HubStyles.css';
+import { useAutorizacion } from '../components/Contexts/AutorizacionContext'; // 1. Importar el hook
 
 function MainHeader() {
- const { isLoggedIn } = useAutorizacion();
+ const { isLoggedIn } = useAutorizacion(); // 2. Obtener el estado de login
 
 
   return (
@@ -28,10 +29,12 @@ function MainHeader() {
             <Nav.Link as={Link} to="/proyecto2" className="main-header-link">Proyecto2</Nav.Link>
             <Nav.Link as={Link} to="/pet-registry" className="main-header-link">Registro de Mascotas</Nav.Link>
             <Nav.Link as={Link} to="/proyecto4" className="main-header-link">Proyecto4</Nav.Link>
-              <Nav.Link as={Link} to="/juego-memoria" className="main-header-link">Juego de Memoria</Nav.Link>
+            {/* 3. Renderizado condicional del enlace */}
+            {isLoggedIn && (
+              <Nav.Link as={Link} to="/juegomemoria" className="main-header-link">Juego de Memoria</Nav.Link>
+            )}
             <Nav.Link href="#profile" className="main-header-link ms-auto">
-            <Nav.Link as={Link} to="/formulario" className="main-header-link">Formulario</Nav.Link> 
-              <i className="bi bi-person-circle"></i> Perfil
+              <PersonCircle /> Perfil
             </Nav.Link>
           </Nav>
         </Navbar.Collapse>
