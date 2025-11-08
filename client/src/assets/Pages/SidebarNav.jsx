@@ -41,7 +41,7 @@ const navItems = [
     ],
   },
 
-  { text: 'Proyecto 6', icon: <SportsEsports />, to: '/juegomemoria' }, 
+  { text: 'Proyecto 6', icon: <SportsEsports />, to: '/juegomemoria', auth: true }, 
   {
     text: 'Más Proyectos',
     icon: <Add />,
@@ -67,11 +67,14 @@ function SidebarNav({ onLoginClick }) {
     setOpenMenuText('');
   };
 
+  // Filtramos los items de navegación. Mostramos solo los que no requieren autenticación
+  // o si el usuario ha iniciado sesión.
+  const visibleNavItems = navItems.filter(item => !item.auth || isLoggedIn);
+
   return (
     <Box
       sx={{
         width: '100%', // Ocupa todo el ancho
-        bgcolor: 'background.paper',
         borderBottom: '1px solid', // Borde inferior en lugar de derecho
         borderColor: 'divider', // Usa el color de borde del tema
         overflowX: 'auto', // Permite scroll horizontal si no caben los elementos
@@ -80,7 +83,7 @@ function SidebarNav({ onLoginClick }) {
     >
       <List sx={{ display: 'flex', flexDirection: 'row', p: 0 }}>
         {/* 2. Bucle de renderizado único y corregido */}
-        {navItems.map((item) => {
+        {visibleNavItems.map((item) => {
           // Renderiza un menú desplegable si el item tiene 'subItems'
           if (item.subItems) {
             const isOpen = openMenuText === item.text;
