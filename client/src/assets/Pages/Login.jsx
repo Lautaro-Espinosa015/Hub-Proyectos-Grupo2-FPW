@@ -34,10 +34,7 @@ export default function Login({ onClose, onSwitchToRegister }) {
     }
   };
 
-  const handleLogout = () => {
-    logout();
-    // La lógica de cierre se ha movido al contexto para consistencia.
-  };
+
 
   const handleClickShowPassword = () => {
     setShowPassword(!showPassword);

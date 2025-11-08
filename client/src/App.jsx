@@ -1,6 +1,7 @@
 import { Routes, Route } from 'react-router-dom';
 import Layout from './assets/Pages/Layout';
 import Home from './assets/Pages/Home';
+import 'bootstrap/dist/css/bootstrap.min.css';
 //import ProyectoHtml1 from './assets/Pages/ProyectoHtml1.jsx';
 import Games from './assets/Pages/Games';
 import AboutUs from './assets/Pages/AboutUs';
@@ -10,7 +11,7 @@ import PetRegistry from './assets/Pages/PetRegistry.jsx';
 import Proyecto01 from './assets/Pages/Proyecto01';
 import Proyecto4 from './assets/Pages/Proyecto4';
 import Formulario from './assets/components/Proyecto5/formulario.jsx';
-import quizz from './assets/components/quiz.jsx';
+import JuegoMemoria from './assets/Pages/JuegoMemoria.jsx';
 import Login from './assets/Pages/Login.jsx';
 
 function App() {
@@ -28,8 +29,9 @@ function App() {
         <Route path='proyecto2' element={<Proyecto2 />} />
         <Route path='petRegistry' element={<PetRegistry />} />
         <Route path='proyecto4' element={<Proyecto4 />} />
+   <Route path='juegomemoria' element={<JuegoMemoria />} />
         <Route path='formulario' element={<Formulario />} />
-        <Route path='quizz' element={<quizz />} />
+     
         <Route path='login' element={<Login />} />
         <Route path='*' element={<Error />} />
       </Route>
