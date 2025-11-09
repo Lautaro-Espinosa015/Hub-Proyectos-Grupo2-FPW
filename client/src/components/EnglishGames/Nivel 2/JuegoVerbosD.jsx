@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { questions as originalQuestions } from "./common/questions.js";
+import { questions as originalQuestions } from "../../common/questions.js";
 import QuestionsCard from "./QuestionCard.jsx";
 
 export default function JuegoVerbosD() {

@@ -1,5 +1,5 @@
 import React from "react";
-import OptionButton from "./common/OptionButton.jsx";
+import OptionButton from "../../common/OptionButton.jsx";
 
 
 function QuestionsCard({ question, options, onAnswer, timeLeft }) {

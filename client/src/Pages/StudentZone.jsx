@@ -24,9 +24,9 @@ const juegosPorNivel = {
     // Aquí podrías añadir más juegos para el Nivel 1 en el futuro
   ],
   2: [{
-      nombre: 'Arrastra la Imagen',
-      descripcion: 'Aprende vocabulario básico relacionando imágenes con sus nombres en inglés.',
-      ruta: '/ArrastraLaImagen'
+      nombre: 'Juego de Verbos',
+      descripcion: 'Aprende la utilizacion de verbos básicos en Ingles',
+      ruta: '/JuegoVerbosD'
     },
   {
     nombre: 'Las Partes Del Cuerpo',
