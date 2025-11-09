@@ -1,164 +1,77 @@
-import { createContext, useContext, useState, useEffect } from 'react';
-import { adminUsers } from '../components/ListaUsuarios';
+import { createContext, useState, useEffect, useCallback, useMemo, useContext } from "react";
+import axios from "axios";
 
-const AutorizacionContext = createContext();
+export const AutorizacionContext = createContext(null);
+const LS_KEY = "auth:user";
+const BASE_URL = "http://localhost:5000/api/usuarios";
 
-export const useAutorizacion = () => {
-  return useContext(AutorizacionContext);
-};
-
-export const AutorizacionProvider = ({ children }) => {
-  const [currentUser, setCurrentUser] = useState(null);
-  const [registeredUsers, setRegisteredUsers] = useState(() => {
+export function AutorizacionProvider({ children }) {
+  const [user, setUser] = useState(() => {
     try {
-      const savedUsers = localStorage.getItem('registeredUsers');
-      return savedUsers ? JSON.parse(savedUsers) : [];
-    } catch (error) {
-      console.error('Error loading users from localStorage:', error);
-      return [];
+      const raw = localStorage.getItem(LS_KEY);
+      return raw ? JSON.parse(raw) : null;
+    } catch {
+      localStorage.removeItem(LS_KEY);
+      return null;
     }
   });
 
-  useEffect(() => {
+  // ✅ Login
+  const login = useCallback(async (credenciales) => {
     try {
-      const savedUser = localStorage.getItem('currentUser');
-      if (savedUser) {
-        const parsedUser = JSON.parse(savedUser);
-        // Validar la estructura del usuario antes de establecerlo
-        if (parsedUser && parsedUser.username && parsedUser.role) {
-          setCurrentUser(parsedUser);
-        }
+      console.log("Credenciales enviadas:", credenciales);
+      const res = await axios.post(`${BASE_URL}/login`, credenciales, {
+        headers: { 'Content-Type': 'application/json' }
+      });
+      if (res.data.success) {
+        setUser(res.data.user);
+        return { success: true };
+      } else {
+        return { success: false, message: res.data.message };
       }
-    } catch (error) {
-      console.error('Error loading current user:', error);
+    } catch (err) {
+      console.error("Error en login:", err);
+      return { success: false, message: "Error interno" };
     }
   }, []);
 
+  // ✅ Registro
+  const register = useCallback(async (datos) => {
+    try {
+      const res = await axios.post(`${BASE_URL}/register`, datos, {
+        headers: { 'Content-Type': 'application/json' }
+      });
+      return res.data;
+    } catch (err) {
+      console.error("Error en registro:", err);
+      return { success: false, message: "Error interno" };
+    }
+  }, []);
+
+  const logout = useCallback(() => {
+    setUser(null);
+    localStorage.removeItem(LS_KEY);
+  }, []);
+
   useEffect(() => {
-    try {
-      localStorage.setItem('registeredUsers', JSON.stringify(registeredUsers));
-    } catch (error) {
-      console.error('Error saving users to localStorage:', error);
-    }
-  }, [registeredUsers]);
+    if (user) localStorage.setItem(LS_KEY, JSON.stringify(user));
+    else localStorage.removeItem(LS_KEY);
+  }, [user]);
 
-  const login = (identifier, password) => {
-    if (!identifier || typeof identifier !== 'string' || !password) {
-      return { success: false, message: 'Usuario o contraseña inválidos.' };
-    }
-
-    const normalizedIdentifier = identifier.toLowerCase().trim();
-
-    // Buscar en la lista de administradores (solo por username)
-    const admin = adminUsers.find(u => u.username.toLowerCase() === normalizedIdentifier);
-    if (admin && admin.password === password) {
-      const { password: _, ...adminData } = admin; // Excluir contraseña
-      const userToStore = { ...adminData, lastLogin: new Date().toISOString() };
-      setCurrentUser(userToStore);
-      try {
-        localStorage.setItem('currentUser', JSON.stringify(userToStore));
-      } catch (error) {
-        console.error('Error saving user to localStorage:', error);
-      }
-      return { success: true };
-    } else if (admin) {
-      return { success: false, message: 'Contraseña incorrecta.' };
-    }
-
-    // Buscar en la lista de usuarios registrados por username O email
-    const user = registeredUsers.find(u => 
-      u.username.toLowerCase() === normalizedIdentifier || 
-      (u.email && u.email.toLowerCase() === normalizedIdentifier)
-    );
-    if (user && user.password === password) {
-      const { password: _, ...userData } = user; // Excluir contraseña
-      const userToStore = { ...userData, lastLogin: new Date().toISOString() };
-      setCurrentUser(userToStore);
-      try {
-        localStorage.setItem('currentUser', JSON.stringify(userToStore));
-      } catch (error) {
-        console.error('Error saving user to localStorage:', error);
-      }
-      return { success: true };
-    } else if (user) {
-      return { success: false, message: 'Contraseña incorrecta.' };
-    }
-
-    return { success: false, message: 'Usuario no encontrado.' };
-  };
-
-  const register = (username, email, password, role, level) => {
-    if (!username || !email || typeof email !== 'string' || !password) {
-      return { success: false, message: 'Todos los campos son requeridos.' };
-    }
-
-    const normalizedUsername = username.toLowerCase().trim();
-    const normalizedEmail = email.toLowerCase().trim();
-    
-    if (normalizedUsername.length < 3) {
-      return { success: false, message: 'El nombre de usuario debe tener al menos 3 caracteres.' };
-    }
-    if (password.length < 6) {
-      return { success: false, message: 'La contraseña debe tener al menos 6 caracteres.' };
-    }
-
-    const isAdmin = adminUsers.some(u => u.username.toLowerCase() === normalizedUsername);
-    const isUsernameTaken = registeredUsers.some(u => u.username.toLowerCase() === normalizedUsername);
-    const isEmailTaken = registeredUsers.some(u => u.email && u.email.toLowerCase() === normalizedEmail);
-
-    if (isAdmin || isUsernameTaken) {
-      return { success: false, message: 'El nombre de usuario ya está en uso.' };
-    }
-    if (isEmailTaken) {
-      return { success: false, message: 'El correo electrónico ya está en uso.' };
-    }
-
-    const newUser = {
-      username: username.trim(),
-      email: email.trim(),
-      password: password, // ¡Inseguro! Solo para demostración.
-      role: role, // 'normal' o 'student'
-      englishLevel: level, // 0, 1, 2, o 3
-      createdAt: new Date().toISOString(),
-    };
-
-    const { password: _, ...userData } = newUser; // Excluir contraseña para el estado y currentUser
-
-    try {
-      setRegisteredUsers(prevUsers => [...prevUsers, newUser]);
-      setCurrentUser(userData);
-      localStorage.setItem('currentUser', JSON.stringify(userData));
-      return { success: true, message: '¡Registro e inicio de sesión exitosos!' };
-    } catch (error) {
-      console.error('Error during registration:', error);
-      return { success: false, message: 'Error interno al registrar el usuario.' };
-    }
-  };
-
-  const logout = (onClose) => {
-    setCurrentUser(null);
-    try {
-      localStorage.removeItem('currentUser');
-    } catch (error) {
-      console.error('Error during logout:', error);
-    }
-    onClose?.(); // Llamamos a la función de cierre si se proporciona
-  };
-
-  const value = {
-    currentUser,
+  const value = useMemo(() => ({
+    user,
+    isAuthenticated: !!user,
     login,
-    logout,
     register,
-    isAdmin: currentUser?.role === 'admin',
-    isLoggedIn: !!currentUser,
-  };
+    logout
+  }), [user, login, register, logout]);
 
   return (
     <AutorizacionContext.Provider value={value}>
       {children}
     </AutorizacionContext.Provider>
   );
-};
+}
 
-export default AutorizacionContext;
+export const useAutorizacion = () => useContext(AutorizacionContext);
+export default AutorizacionProvider;

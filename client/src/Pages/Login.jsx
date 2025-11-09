@@ -14,44 +14,34 @@ import {
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 
 export default function Login({ onClose, onSwitchToRegister }) {
-  const { currentUser, login, logout } = useAutorizacion();
+  const { user, login, logout } = useAutorizacion();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
     setError('');
     setSuccess('');
-    const result = login(username, password);
+    const result = await login({ username, password }); // ✅ Enviar objeto
     if (!result.success) {
       setError(result.message);
     } else {
       setSuccess('¡Inicio de sesión exitoso!');
-      // Eliminamos el cierre automático para que puedas ver tu perfil.
     }
   };
 
+  const handleClickShowPassword = () => setShowPassword(!showPassword);
+  const handleMouseDownPassword = (event) => event.preventDefault();
 
-
-  const handleClickShowPassword = () => {
-    setShowPassword(!showPassword);
-  };
-
-  const handleMouseDownPassword = (event) => {
-    event.preventDefault();
-  };
-
-  if (currentUser) {
+  if (user) {
     return (
       <Paper elevation={0} sx={{ p: 3, textAlign: 'center' }}>
-        <Typography variant="h6">
-          ¡Bienvenido, {currentUser.username}!
-        </Typography>
+        <Typography variant="h6">¡Bienvenido, {user.username}!</Typography>
         <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-          (Rol: {currentUser.role})
+          (Rol: {user.rol})
         </Typography>
         {success && <Alert severity="success" sx={{ mb: 2 }}>{success}</Alert>}
         <Button variant="contained" color="error" onClick={() => logout(onClose)}>
@@ -66,7 +56,6 @@ export default function Login({ onClose, onSwitchToRegister }) {
       {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
       {success && <Alert severity="success" sx={{ mb: 2 }}>{success}</Alert>}
       
-      {/* Formulario de Login */}
       <Box component="form" onSubmit={handleLogin} noValidate>
         <Typography variant="h5" gutterBottom>Iniciar Sesión</Typography>
         <TextField
