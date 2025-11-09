@@ -14,6 +14,13 @@ const juegosPorNivel = {
       descripcion: 'Aprende vocabulario básico relacionando imágenes con sus nombres en inglés.',
       ruta: '/ArrastraLaImagen'
     },
+
+
+     {
+      nombre: 'Adivina el Día',
+      descripcion: 'Aprende los días de la semana en inglés jugando a adivinar el día correcto.',
+      ruta: '/AdivinaDia'
+    },
     // Aquí podrías añadir más juegos para el Nivel 1 en el futuro
   ],
   2: [{
