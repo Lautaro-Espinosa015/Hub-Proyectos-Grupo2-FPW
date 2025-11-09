@@ -13,10 +13,12 @@ import Proyecto4 from './Pages/Proyecto4';
 import Formulario from './components/Proyecto5/formulario.jsx';
 import JuegoMemoria from './Pages/JuegoMemoria.jsx';
 import Login from './Pages/Login.jsx';
-import ArrastraLaImagen from './components/EnglishGames/ArrastraLaImagen.jsx';
+import ArrastraLaImagen from './components/EnglishGames/Nivel 1/ArrastraLaImagen.jsx'
 import StudentZone from './Pages/StudentZone.jsx'; // Importamos la nueva página
 import AdivinaDia from './components/EnglishGames/Nivel 1/AdivinaDia.jsx';
-import BodyClickGame from './components/EnglishGames/BodyClickGame.jsx';
+import BodyClickGame from './components/EnglishGames/Nivel 2/BodyClickGame.jsx'
+import JuegoVerbosD from './components/EnglishGames/Nivel 2/JuegoVerbosD.jsx';
+
 function App() {
   return (
     <Routes>
@@ -36,6 +38,7 @@ function App() {
         <Route path='ArrastraLaImagen' element={<ArrastraLaImagen />} />
         <Route path='formulario' element={<Formulario />} />
         <Route path='student-zone/:level' element={<StudentZone />} /> {/* Añadimos la ruta dinámica */}
+     <Route path='JuegoVerbosD' element={<JuegoVerbosD />} />
      <Route path='AdivinaDia' element={<AdivinaDia />} />
      <Route path='BodyClickGame' element={<BodyClickGame />} />
         <Route path='login' element={<Login />} />
