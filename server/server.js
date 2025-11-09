@@ -1,19 +1,22 @@
 const express = require('express');
+const cors = require('cors');
 const app = express();
 
-app.get('/',(req,res)=>{
-    res.end("Bienvenido");
+app.use(cors());
+app.use(express.json());
+
+// Conexión a MongoDB
+require('./conection.js');
+
+// Rutas
+const usuariosRoutes = require('./routes/users');
+app.use('/api/usuarios', usuariosRoutes);
+
+app.get('/', (req, res) => {
+  res.send("Bienvenido");
 });
 
-//routing
-const archivosDB = require('./conection.js');
-const usuarios = require('./model/usuarios.js');
-
-//middle
-app.use('/api', usuarios);
-
-//list
-
-app.listen(5000,()=>{
-        console.log("servidor funcando");
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => {
+  console.log(`Servidor corriendo en puerto ${PORT}`);
 });
