@@ -42,8 +42,6 @@ const navItems = [
   },
 
   { text: 'Proyecto 6', icon: <SportsEsports />, to: '/juegomemoria', auth: true },
-  { text: 'ArrastraLaImagen', icon: <SportsEsports />, to: '/ArrastraLaImagen', auth: true }, 
-
 
   
   {
