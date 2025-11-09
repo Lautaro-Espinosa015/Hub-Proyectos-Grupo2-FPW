@@ -79,7 +79,7 @@ function Registrar({ onClose, onSwitchToLogin }) {
     if (result.success) {
       setSuccess(result.message);
       setIsPlacementModalOpen(false); // Cierra el modal
-      setTimeout(() => onClose(), 2000); // Cierra el panel de registro
+      setTimeout(() => onClose(), 2000); // Cierra el panel de registro después de 2s
     } else {
       setError(result.message);
       setIsPlacementModalOpen(false); // Cierra el modal incluso si hay error

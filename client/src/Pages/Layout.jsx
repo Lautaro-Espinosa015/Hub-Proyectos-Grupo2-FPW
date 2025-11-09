@@ -22,7 +22,7 @@ const darkTheme = createTheme({
 function Layout() {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [authView, setAuthView] = useState('login'); // 'login' o 'register'
-  const { isLoggedIn, logout } = useAutorizacion();
+  const { isLoggedIn, currentUser, logout } = useAutorizacion();
 
   const handleDrawerOpen = () => {
     setDrawerOpen(true);
@@ -37,19 +37,22 @@ function Layout() {
     <ThemeProvider theme={darkTheme}>
       <CssBaseline /> {/* Normaliza estilos y aplica fondo oscuro al body */}
       <div className="main-content">
-        <SidebarNav onLoginClick={handleDrawerOpen} logout={logout} isLoggedIn={isLoggedIn} />
+        <SidebarNav onLoginClick={handleDrawerOpen} isLoggedIn={isLoggedIn} currentUser={currentUser} />
         <main className="page-content"><Outlet /></main>
       </div>
       <Drawer anchor="right" open={drawerOpen} onClose={handleDrawerClose}>
         <Box sx={{ width: 350, p: 2 }}>
-          {authView === 'login' ? (
+          {isLoggedIn ? (
+            // Si el usuario ya inició sesión, siempre mostramos la vista de bienvenida/logout.
+            <Login onClose={handleDrawerClose} />
+          ) : authView === 'login' ? (
             <>
               <Typography variant="h5" sx={{ mb: 2, textAlign: 'center' }}>Acceso de Usuario</Typography>
               <Login onClose={handleDrawerClose} onSwitchToRegister={() => setAuthView('register')} />
             </>
           ) : (
             <>
-              <Typography variant="h5" sx={{ mb: 2, textAlign: 'center' }}>Crear Cuenta</Typography>
+              <Typography variant="h5" sx={{ mb: 2, textAlign: 'center' }}>Crear una Cuenta</Typography>
               <Registrar onClose={handleDrawerClose} onSwitchToLogin={() => setAuthView('login')} />
             </>
           )}

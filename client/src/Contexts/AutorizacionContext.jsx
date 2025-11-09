@@ -6,7 +6,7 @@ const LS_KEY = "auth:user";
 const BASE_URL = "http://localhost:5000/api/usuarios";
 
 export function AutorizacionProvider({ children }) {
-  const [user, setUser] = useState(() => {
+  const [currentUser, setCurrentUser] = useState(() => {
     try {
       const raw = localStorage.getItem(LS_KEY);
       return raw ? JSON.parse(raw) : null;
@@ -16,6 +16,8 @@ export function AutorizacionProvider({ children }) {
     }
   });
 
+  const [isLoggedIn, setIsLoggedIn] = useState(!!currentUser);
+
   // ✅ Login
   const login = useCallback(async (credenciales) => {
     try {
@@ -24,7 +26,8 @@ export function AutorizacionProvider({ children }) {
         headers: { 'Content-Type': 'application/json' }
       });
       if (res.data.success) {
-        setUser(res.data.user);
+        setCurrentUser(res.data.user);
+        setIsLoggedIn(true);
         return { success: true };
       } else {
         return { success: false, message: res.data.message };
@@ -49,25 +52,31 @@ export function AutorizacionProvider({ children }) {
   }, []);
 
   const logout = useCallback(() => {
-    setUser(null);
+    setCurrentUser(null);
+    setIsLoggedIn(false);
     localStorage.removeItem(LS_KEY);
   }, []);
 
   useEffect(() => {
-    if (user) localStorage.setItem(LS_KEY, JSON.stringify(user));
-    else localStorage.removeItem(LS_KEY);
-  }, [user]);
+    if (currentUser) {
+      localStorage.setItem(LS_KEY, JSON.stringify(currentUser));
+      setIsLoggedIn(true);
+    } else {
+      localStorage.removeItem(LS_KEY);
+      setIsLoggedIn(false);
+    }
+  }, [currentUser]);
 
-  const value = useMemo(() => ({
-    user,
-    isAuthenticated: !!user,
+  const contextValue = useMemo(() => ({
+    currentUser,
+    isLoggedIn,
     login,
+    logout,
     register,
-    logout
-  }), [user, login, register, logout]);
+  }), [currentUser, isLoggedIn, login, logout, register]);
 
   return (
-    <AutorizacionContext.Provider value={value}>
+    <AutorizacionContext.Provider value={contextValue}>
       {children}
     </AutorizacionContext.Provider>
   );

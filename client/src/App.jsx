@@ -14,6 +14,7 @@ import Formulario from './components/Proyecto5/formulario.jsx';
 import JuegoMemoria from './Pages/JuegoMemoria.jsx';
 import Login from './Pages/Login.jsx';
 import ArrastraLaImagen from './components/EnglishGames/ArrastraLaImagen.jsx';
+import StudentZone from './Pages/StudentZone.jsx'; // Importamos la nueva página
 
 function App() {
   return (
@@ -33,6 +34,7 @@ function App() {
         <Route path='juegomemoria' element={<JuegoMemoria />} />
         <Route path='ArrastraLaImagen' element={<ArrastraLaImagen />} />
         <Route path='formulario' element={<Formulario />} />
+        <Route path='student-zone/:level' element={<StudentZone />} /> {/* Añadimos la ruta dinámica */}
      
         <Route path='login' element={<Login />} />
         <Route path='*' element={<Error />} />
