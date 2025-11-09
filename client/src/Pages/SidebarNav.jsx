@@ -40,9 +40,6 @@ const navItems = [
       { text: 'Formulario', to: '/formulario' },
     ],
   },
-
-  { text: 'Proyecto 6', icon: <SportsEsports />, to: '/juegomemoria', auth: true },
-
   
   {
     text: 'Más Proyectos',

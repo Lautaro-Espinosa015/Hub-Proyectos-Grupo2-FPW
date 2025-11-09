@@ -20,6 +20,11 @@ import BodyClickGame from './components/EnglishGames/Nivel 2/BodyClickGame.jsx'
 import JuegoVerbosD from './components/EnglishGames/Nivel 2/JuegoVerbosD.jsx';
 import JuegoMemoria from './components/EnglishGames/Nivel 1/JuegoMemoria.jsx';
 
+import QuizSimulator from './components/EnglishGames/Nivel 1/QuizSimulator.jsx';
+import AdvancedQuizSimulator from './components/EnglishGames/Nivel 3/AdvancedQuizSimulator.jsx';
+import ConversationalSimulator from './components/EnglishGames/Nivel 3/ConversationalSimulator.jsx';
+
+
 function App() {
   return (
     <Routes>
@@ -41,6 +46,11 @@ function App() {
         <Route path='ArrastraLaImagen' element={<ArrastraLaImagen />} />
         <Route path='formulario' element={<Formulario />} />
         <Route path='student-zone/:level' element={<StudentZone />} /> {/* Añadimos la ruta dinámica */}
+        <Route path='QuizSimulator' element={<QuizSimulator />} />
+        <Route path='AdvancedQuizSimulator' element={<AdvancedQuizSimulator />} />
+        <Route path='ConversationalSimulator' element={<ConversationalSimulator />} />
+
+
      <Route path='JuegoVerbosD' element={<JuegoVerbosD />} />
      <Route path='AdivinaDia' element={<AdivinaDia />} />
      <Route path='BodyClickGame' element={<BodyClickGame />} />

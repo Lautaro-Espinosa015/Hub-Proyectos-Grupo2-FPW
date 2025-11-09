@@ -24,27 +24,50 @@ const juegosPorNivel = {
     },
 
 {
-      nombre: 'Juego de Memoria 2',
+      nombre: 'Juego de Memoria ',
       descripcion: 'Aprende vocabulario básico en inglés con este divertido juego de memoria.',
       ruta: '/juegomemoria'
     },
 
+    {
+      nombre: 'Quiz de Vocabulario',
+      descripcion: 'Pon a prueba tu conocimiento con este quiz de opción múltiple.',
+      ruta: '/QuizSimulator'
+    },
+
+
     // Aquí podrías añadir más juegos para el Nivel 1 en el futuro
   ],
-  2: [{
-      nombre: 'Juego de Verbos',
-      descripcion: 'Aprende la utilizacion de verbos básicos en Ingles',
-      ruta: '/JuegoVerbosD'
-    },
+  2: [
   {
     nombre: 'Las Partes Del Cuerpo',
       descripcion: 'Aprende las partes del cuerpo relacionando imágenes con sus nombres en inglés.',
       ruta: '/BodyClickGame'
-  },], // Juegos para Nivel 2
+  },
+
+{
+      nombre: 'Juego de Verbos',
+      descripcion: 'Aprende la utilizacion de verbos básicos en Ingles',
+      ruta: '/JuegoVerbosD'
+    },
+
+], // Juegos para Nivel 2
   3: [{
-    nombre: 'Arrastra la Imagen',
-      descripcion: 'Aprende vocabulario básico relacionando imágenes con sus nombres en inglés.',
-      ruta: '/ArrastraLaImagen'
+
+
+      nombre: 'Dialoga con el Simulador',
+      descripcion: 'Aprende pronunciacion con el simulador de conversacion.',
+      ruta: '/ConversationalSimulator'
+    },
+    
+
+    {
+      nombre: 'Quiz Avanzado',
+      descripcion: 'Desafía tus conocimientos con preguntas más complejas y con más opciones.',
+      ruta: '/AdvancedQuizSimulator'
+    
+
+
   }]  // Juegos para Nivel 3
 };
 
