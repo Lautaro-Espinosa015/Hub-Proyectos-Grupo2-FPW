@@ -77,7 +77,7 @@
   box-sizing: border-box;
 }
 
-
+/* Accesibilidad: ocultar visualmente */
 .sr-only {
   position: absolute !important;
   width: 1px !important;

@@ -27,8 +27,17 @@ const juegosPorNivel = {
       nombre: 'Arrastra la Imagen',
       descripcion: 'Aprende vocabulario básico relacionando imágenes con sus nombres en inglés.',
       ruta: '/ArrastraLaImagen'
-    },], // Juegos para Nivel 2
-  3: []  // Juegos para Nivel 3
+    },
+  {
+    nombre: 'Las Partes Del Cuerpo',
+      descripcion: 'Aprende las partes del cuerpo relacionando imágenes con sus nombres en inglés.',
+      ruta: '/BodyClickGame'
+  },], // Juegos para Nivel 2
+  3: [{
+    nombre: 'Arrastra la Imagen',
+      descripcion: 'Aprende vocabulario básico relacionando imágenes con sus nombres en inglés.',
+      ruta: '/ArrastraLaImagen'
+  }]  // Juegos para Nivel 3
 };
 
 // Información de cada nivel

@@ -1,20 +1,21 @@
 import React, { useState, useEffect } from "react";
-import "./BodyClickGame.css";
+import "../../assets/Css/BodyClickGame.css";
 
-import headImg from "../../assets/Img/BodyGame/head.png";
-import eyeImg from "../../assets/Img/BodyGame/eye.png";
-import mouthImg from "../../assets/Img/BodyGame/mouth.png";
-import armImg from "../../assets/Img/BodyGame/arm.png";
-import handImg from "../../assets/Img/BodyGame/hand.png";
-import legImg from "../../assets/Img/BodyGame/leg.png";
-import footImg from "../../assets/Img/BodyGame/foot.png";
+
+import headImg from "../../assets/Img/ImgEnglishGames/BodyClickGame/head.png";
+import eyeImg from "../../assets/Img/ImgEnglishGames/BodyClickGame/eye.png";
+import mouthImg from "../../assets/Img/ImgEnglishGames/BodyClickGame/mouth.png";
+import armImg from "../../assets/Img/ImgEnglishGames/BodyClickGame/arm.png";
+import handImg from "../../assets/Img/ImgEnglishGames/BodyClickGame/hand.png";
+import legImg from "../../assets/Img/ImgEnglishGames/BodyClickGame/leg.png";
+import footImg from "../../assets/Img/ImgEnglishGames/BodyClickGame/foot.png";
 
 export default function BodyClickGame() {
-  const [message, setMessage] = useState("Click the HEAD");
-  const [target, setTarget] = useState("head");
+  const [message, setMessage] = useState("");
+  const [target, setTarget] = useState(null);
   const [score, setScore] = useState(0);
   const [lastHit, setLastHit] = useState(null);
-  const [hitState, setHitState] = useState(null); // 'correct' | 'wrong' | null
+  const [hitState, setHitState] = useState(null); // 'correct' | 'wrong'
 
   const bodyParts = [
     { id: "head", x: "50%", y: "12%", width: "110px", height: "110px", z: 2 },
@@ -37,8 +38,12 @@ export default function BodyClickGame() {
   };
 
   useEffect(() => {
-    setMessage(`Click the ${target.toUpperCase()}`);
+    nextRound(); // inicializa con objetivo aleatorio
   }, []);
+
+  useEffect(() => {
+    if (target) setMessage(`Click the ${target.toUpperCase()}`);
+  }, [target]);
 
   const handleClick = (part) => {
     if (part === target) {
@@ -67,9 +72,12 @@ export default function BodyClickGame() {
 
   const nextRound = () => {
     const parts = bodyParts.map((p) => p.id);
-    const randomPart = parts[Math.floor(Math.random() * parts.length)];
+    let randomPart = parts[Math.floor(Math.random() * parts.length)];
+    // evita repetir el mismo objetivo consecutivo
+    while (parts.length > 1 && randomPart === target) {
+      randomPart = parts[Math.floor(Math.random() * parts.length)];
+    }
     setTarget(randomPart);
-    setMessage(`Click the ${randomPart.toUpperCase()}`);
   };
 
   return (
