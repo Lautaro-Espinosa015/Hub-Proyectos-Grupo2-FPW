@@ -34,11 +34,11 @@ function Registrar({ onClose, onSwitchToLogin }) {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
     setSuccess('');
-
+  
     if (password !== confirmPassword) {
       setError('Las contraseñas no coinciden.');
       return;
@@ -47,7 +47,13 @@ function Registrar({ onClose, onSwitchToLogin }) {
     // Lógica condicional basada en el rol
     if (role === 'normal') {
       // Si es usuario normal, registrar directamente.
-      const result = register(username, email, password, 'normal', 0);
+      const result = await register({
+        username,
+        email,
+        password,
+        rol: 'normal',
+        nivel: 0,
+      });
       if (result.success) {
         setSuccess(result.message);
         setTimeout(() => onClose(), 2000); // Cerrar todo el panel después de 2s
@@ -62,12 +68,18 @@ function Registrar({ onClose, onSwitchToLogin }) {
   };
 
   // Esta función se llama desde el modal cuando se selecciona un nivel.
-  const handleLevelSelectAndRegister = (level) => {
-    const result = register(username, email, password, 'student', level);
+  const handleLevelSelectAndRegister = async (level) => {
+    const result = await register({
+      username,
+      email,
+      password,
+      rol: 'student',
+      nivel: level,
+    });
     if (result.success) {
       setSuccess(result.message);
       setIsPlacementModalOpen(false); // Cierra el modal
-      setTimeout(() => onClose(), 2000); // Cierra el panel de registro
+      setTimeout(() => onClose(), 2000); // Cierra el panel de registro después de 2s
     } else {
       setError(result.message);
       setIsPlacementModalOpen(false); // Cierra el modal incluso si hay error

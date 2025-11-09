@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { Box, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Menu, MenuItem } from '@mui/material';
-import { Home, Folder, Code, CodeSharp, Pets, People, SportsEsports, ArrowDropDown, Add, Login, Logout } from '@mui/icons-material';
+import { Home, Folder, Code, CodeSharp, Pets, People, SportsEsports, ArrowDropDown, Add, Login, Logout, Explore, Build, RecordVoiceOver } from '@mui/icons-material';
 
 import { useAutorizacion } from '../Contexts/AutorizacionContext';
 
@@ -43,6 +43,9 @@ const navItems = [
 
   { text: 'Proyecto 6', icon: <SportsEsports />, to: '/juegomemoria', auth: true },
   { text: 'ArrastraLaImagen', icon: <SportsEsports />, to: '/ArrastraLaImagen', auth: true }, 
+
+
+  
   {
     text: 'Más Proyectos',
     icon: <Add />,
@@ -52,9 +55,26 @@ const navItems = [
   },
 ];
 
-function SidebarNav({ onLoginClick }) {
-  const { isLoggedIn, currentUser, logout } = useAutorizacion();
+// Definimos la estructura del menú para los estudiantes
+const studentNavConfig = {
+  1: {
+    text: 'Zona Explorador',
+    icon: <Explore />,
+    subItems: [{ text: 'Juegos de Nivel 1', to: '/student-zone/1' }],
+  },
+  2: {
+    text: 'Zona Constructor',
+    icon: <Build />,
+    subItems: [{ text: 'Juegos de Nivel 2', to: '/student-zone/2' }],
+  },
+  3: {
+    text: 'Zona Conversador',
+    icon: <RecordVoiceOver />,
+    subItems: [{ text: 'Juegos de Nivel 3', to: '/student-zone/3' }],
+  },
+};
 
+function SidebarNav({ onLoginClick, isLoggedIn, currentUser }) {
   const [anchorEl, setAnchorEl] = useState(null);
   const [openMenuText, setOpenMenuText] = useState('');
 
@@ -74,6 +94,7 @@ function SidebarNav({ onLoginClick }) {
 
   return (
     <Box
+      component="nav"
       sx={{
         width: '100%', // Ocupa todo el ancho
         borderBottom: '1px solid', // Borde inferior en lugar de derecho
@@ -83,6 +104,53 @@ function SidebarNav({ onLoginClick }) {
       }}
     >
       <List sx={{ display: 'flex', flexDirection: 'row', p: 0 }}>
+        {/* Renderizado condicional del menú de estudiante */}
+        {isLoggedIn && currentUser?.rol === 'student' && currentUser?.nivel > 0 && (
+          (() => {
+            const studentNavItem = studentNavConfig[currentUser.nivel];
+            if (!studentNavItem) return null;
+
+            const isOpen = openMenuText === studentNavItem.text;
+            return (
+              <ListItem key={studentNavItem.text} disablePadding>
+                <ListItemButton
+                  onClick={(e) => handleMenuClick(e, studentNavItem)}
+                  sx={{ py: 1, px: 2, flexDirection: 'column', minWidth: '140px', textAlign: 'center', bgcolor: 'primary.dark', color: 'primary.contrastText' }}
+                >
+                  <ListItemIcon sx={{ minWidth: 'auto', justifyContent: 'center', color: 'inherit' }}>
+                    {studentNavItem.icon}
+                  </ListItemIcon>
+                  <ListItemText
+                    primary={
+                      <>
+                        {studentNavItem.text}
+                        <ArrowDropDown sx={{ fontSize: 16, ml: 0.5, verticalAlign: 'middle' }} />
+                      </>
+                    }
+                    primaryTypographyProps={{ variant: 'caption', noWrap: true, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                  />
+                </ListItemButton>
+                <Menu
+                  anchorEl={anchorEl}
+                  open={isOpen}
+                  onClose={handleMenuClose}
+                >
+                  {studentNavItem.subItems.map((subItem) => (
+                    <MenuItem key={subItem.text} component={NavLink} to={subItem.to} onClick={handleMenuClose} disabled={subItem.disabled}>
+                      {subItem.text}
+                    </MenuItem>
+                  ))}
+                </Menu>
+              </ListItem>
+            );
+          })()
+        )}
+
+        {/* Separador visual si el menú de estudiante está presente */}
+        {isLoggedIn && currentUser?.rol === 'student' && currentUser?.nivel > 0 && (
+          <Box sx={{ borderLeft: '1px solid', borderColor: 'divider', mx: 1 }} />
+        )}
+
         {/* 2. Bucle de renderizado único y corregido */}
         {visibleNavItems.map((item) => {
           // Renderiza un menú desplegable si el item tiene 'subItems'

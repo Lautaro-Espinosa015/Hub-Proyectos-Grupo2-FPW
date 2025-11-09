@@ -14,7 +14,7 @@ import {
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 
 export default function Login({ onClose, onSwitchToRegister }) {
-  const { user, login, logout } = useAutorizacion();
+  const { currentUser, login, logout } = useAutorizacion();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -30,21 +30,25 @@ export default function Login({ onClose, onSwitchToRegister }) {
       setError(result.message);
     } else {
       setSuccess('¡Inicio de sesión exitoso!');
+      setTimeout(() => onClose(), 1000); // Cierra el panel después de 1s
     }
   };
 
   const handleClickShowPassword = () => setShowPassword(!showPassword);
   const handleMouseDownPassword = (event) => event.preventDefault();
 
-  if (user) {
+  if (currentUser) {
     return (
       <Paper elevation={0} sx={{ p: 3, textAlign: 'center' }}>
-        <Typography variant="h6">¡Bienvenido, {user.username}!</Typography>
+        <Typography variant="h6">¡Bienvenido, {currentUser.username}!</Typography>
         <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-          (Rol: {user.rol})
+          (Rol: {currentUser.rol})
         </Typography>
         {success && <Alert severity="success" sx={{ mb: 2 }}>{success}</Alert>}
-        <Button variant="contained" color="error" onClick={() => logout(onClose)}>
+        <Button variant="contained" color="error" onClick={() => {
+          logout();
+          if (onClose) onClose();
+        }}>
           Cerrar Sesión
         </Button>
       </Paper>
