@@ -43,6 +43,9 @@ const navItems = [
 
   { text: 'Proyecto 6', icon: <SportsEsports />, to: '/juegomemoria', auth: true },
   { text: 'ArrastraLaImagen', icon: <SportsEsports />, to: '/ArrastraLaImagen', auth: true }, 
+
+
+  
   {
     text: 'Más Proyectos',
     icon: <Add />,
@@ -52,8 +55,8 @@ const navItems = [
   },
 ];
 
-function SidebarNav({ onLoginClick }) {
-  const { isLoggedIn, currentUser, logout } = useAutorizacion();
+function SidebarNav({ onLoginClick, isLoggedIn }) {
+  const { currentUser } = useAutorizacion();
 
   const [anchorEl, setAnchorEl] = useState(null);
   const [openMenuText, setOpenMenuText] = useState('');

@@ -30,6 +30,7 @@ export default function Login({ onClose, onSwitchToRegister }) {
       setError(result.message);
     } else {
       setSuccess('¡Inicio de sesión exitoso!');
+      setTimeout(() => onClose(), 1000); // Cierra el panel después de 1s
     }
   };
 
@@ -44,7 +45,10 @@ export default function Login({ onClose, onSwitchToRegister }) {
           (Rol: {user.rol})
         </Typography>
         {success && <Alert severity="success" sx={{ mb: 2 }}>{success}</Alert>}
-        <Button variant="contained" color="error" onClick={() => logout(onClose)}>
+        <Button variant="contained" color="error" onClick={() => {
+          logout();
+          if (onClose) onClose();
+        }}>
           Cerrar Sesión
         </Button>
       </Paper>

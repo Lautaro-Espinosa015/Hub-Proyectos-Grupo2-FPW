@@ -22,7 +22,7 @@ const darkTheme = createTheme({
 function Layout() {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [authView, setAuthView] = useState('login'); // 'login' o 'register'
-  const { isLoggedIn } = useAutorizacion();
+  const { isLoggedIn, logout } = useAutorizacion();
 
   const handleDrawerOpen = () => {
     setDrawerOpen(true);
@@ -37,7 +37,7 @@ function Layout() {
     <ThemeProvider theme={darkTheme}>
       <CssBaseline /> {/* Normaliza estilos y aplica fondo oscuro al body */}
       <div className="main-content">
-        <SidebarNav onLoginClick={handleDrawerOpen} />
+        <SidebarNav onLoginClick={handleDrawerOpen} logout={logout} isLoggedIn={isLoggedIn} />
         <main className="page-content"><Outlet /></main>
       </div>
       <Drawer anchor="right" open={drawerOpen} onClose={handleDrawerClose}>
