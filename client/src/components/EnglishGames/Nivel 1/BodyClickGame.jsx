@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react";
-import "../../assets/Css/BodyClickGame.css";
+import '../../../assets/Css/BodyClickGame.css';
 
 
-import headImg from "../../assets/Img/ImgEnglishGames/BodyClickGame/head.png";
-import eyeImg from "../../assets/Img/ImgEnglishGames/BodyClickGame/eye.png";
-import mouthImg from "../../assets/Img/ImgEnglishGames/BodyClickGame/mouth.png";
-import armImg from "../../assets/Img/ImgEnglishGames/BodyClickGame/arm.png";
-import handImg from "../../assets/Img/ImgEnglishGames/BodyClickGame/hand.png";
-import legImg from "../../assets/Img/ImgEnglishGames/BodyClickGame/leg.png";
-import footImg from "../../assets/Img/ImgEnglishGames/BodyClickGame/foot.png";
+import headImg from "../../../assets/Img/ImgEnglishGames/BodyClickGame/head.png";
+import eyeImg from "../../../assets/Img/ImgEnglishGames/BodyClickGame/eye.png";
+import mouthImg from "../../../assets/Img/ImgEnglishGames/BodyClickGame/mouth.png";
+import armImg from "../../../assets/Img/ImgEnglishGames/BodyClickGame/arm.png";
+import handImg from "../../../assets/Img/ImgEnglishGames/BodyClickGame/hand.png";
+import legImg from "../../../assets/Img/ImgEnglishGames/BodyClickGame/leg.png";
+import footImg from "../../../assets/Img/ImgEnglishGames/BodyClickGame/foot.png";
 
 export default function BodyClickGame() {
   const [message, setMessage] = useState("");

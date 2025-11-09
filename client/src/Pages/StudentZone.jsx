@@ -6,6 +6,7 @@ import ExploreIcon from '@mui/icons-material/Explore';
 import BuildIcon from '@mui/icons-material/Build';
 import RecordVoiceOverIcon from '@mui/icons-material/RecordVoiceOver';
 
+
 // --- Definimos los juegos para cada nivel ---
 const juegosPorNivel = {
   1: [
