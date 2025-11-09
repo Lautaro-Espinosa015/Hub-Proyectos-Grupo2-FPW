@@ -62,11 +62,20 @@ const advancedQuizData = [
 
 export default function AdvancedQuizSimulator() {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [score, setScore] = useState(0);
+  const [score, setScore] = useState(0); // Puntuación de la sesión actual
+  const [puntuacionGeneral, setPuntuacionGeneral] = useState(0); // Puntuación persistente
   const [feedback, setFeedback] = useState({ type: '', message: '' });
   const [isAnswering, setIsAnswering] = useState(false);
   const [gameOver, setGameOver] = useState(false);
   const [showHint, setShowHint] = useState(false);
+
+  // Cargar puntuación general desde localStorage al iniciar
+  useEffect(() => {
+    const puntuacionGuardada = localStorage.getItem("puntuacionAdvancedQuiz");
+    if (puntuacionGuardada) {
+      setPuntuacionGeneral(parseInt(puntuacionGuardada, 10));
+    }
+  }, []);
 
   const audioRef = useRef(new Audio());
   const currentQuestion = advancedQuizData[currentQuestionIndex];
@@ -101,6 +110,11 @@ export default function AdvancedQuizSimulator() {
     const processResult = () => {
       if (option.isCorrect) {
         setScore(prev => prev + 1);
+        // Actualizar y guardar la puntuación general
+        const nuevaPuntuacion = puntuacionGeneral + 1;
+        setPuntuacionGeneral(nuevaPuntuacion);
+        localStorage.setItem("puntuacionAdvancedQuiz", nuevaPuntuacion);
+
         setFeedback({ type: 'correct', message: '¡Excelente!' });
         playSound(audioCorrect, () => {
           setTimeout(() => {
@@ -131,6 +145,7 @@ export default function AdvancedQuizSimulator() {
   const handleRestartGame = () => {
     setCurrentQuestionIndex(0);
     setScore(0);
+    // No reiniciamos la puntuación general
     setFeedback({ type: '', message: '' });
     setIsAnswering(false);
     setGameOver(false);
@@ -144,7 +159,7 @@ export default function AdvancedQuizSimulator() {
         <Paper elevation={6} sx={{ p: 4, borderRadius: 2 }}>
           <Typography variant="h4" color="primary" gutterBottom>¡Juego Terminado!</Typography>
           <Typography variant="h5" sx={{ mb: 3 }}>
-            Tu puntaje final es: {score} de {advancedQuizData.length}
+            Tu puntaje en esta ronda fue: {score} de {advancedQuizData.length}
           </Typography>
           <Button
             variant="contained"
@@ -168,7 +183,7 @@ export default function AdvancedQuizSimulator() {
         <Typography variant="h4" component="h1" gutterBottom fontWeight="bold" color="primary">
           Quiz Interactivo
         </Typography>
-        <Chip label={`Puntaje: ${score}`} color="secondary" sx={{ mb: 2, fontSize: '1rem' }} />
+        <Chip label={`Puntuación General: ${puntuacionGeneral}`} color="secondary" sx={{ mb: 2, fontSize: '1rem' }} />
 
         <Box sx={{ mb: 3, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
           <Box

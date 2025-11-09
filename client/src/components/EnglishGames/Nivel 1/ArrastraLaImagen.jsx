@@ -36,17 +36,23 @@ const objetos = [
 export default function ArrastraLaImagen() {
   const [objetosColocados, setObjetosColocados] = useState({});
   const [objetosActivos, setObjetosActivos] = useState([]);
+  const [puntuacion, setPuntuacion] = useState(0);
+  const [aciertosTotales, setAciertosTotales] = useState(0);
   const referenciaAudio = useRef(null);
+
+  useEffect(() => {
+    seleccionarObjetosAleatorios();
+    const puntuacionGuardada = localStorage.getItem('puntuacionEmparejamiento');
+    if (puntuacionGuardada) {
+      setPuntuacion(parseInt(puntuacionGuardada));
+    }
+  }, []);
 
   const seleccionarObjetosAleatorios = () => {
     const mezclados = [...objetos].sort(() => Math.random() - 0.5);
     setObjetosActivos(mezclados.slice(0, 3));
-    setObjetosColocados({}); // Reinicia los casilleros
+    setObjetosColocados({});
   };
-
-  useEffect(() => {
-    seleccionarObjetosAleatorios();
-  }, []);
 
   const iniciarArrastre = (evento, idObjeto) => {
     evento.dataTransfer.setData('text/plain', idObjeto);
@@ -55,8 +61,17 @@ export default function ArrastraLaImagen() {
   const soltarObjeto = (evento, idCasillero) => {
     evento.preventDefault();
     const idArrastrado = evento.dataTransfer.getData('text/plain');
-    if (idArrastrado === idCasillero) {
+    if (idArrastrado === idCasillero && !objetosColocados[idCasillero]) {
       setObjetosColocados((previo) => ({ ...previo, [idCasillero]: true }));
+
+      const nuevosAciertos = aciertosTotales + 1;
+      setAciertosTotales(nuevosAciertos);
+
+      if (nuevosAciertos % 5 === 0) {
+        const nuevaPuntuacion = puntuacion + 1;
+        setPuntuacion(nuevaPuntuacion);
+        localStorage.setItem('puntuacionEmparejamiento', nuevaPuntuacion);
+      }
     }
   };
 
@@ -75,6 +90,11 @@ export default function ArrastraLaImagen() {
     <Box sx={{ maxWidth: 960, mx: 'auto', py: 4 }}>
       <Typography variant="h4" align="center" gutterBottom fontWeight="bold" color="primary">
         Relaciona el objeto con su nombre en Inglés
+      </Typography>
+
+      {/* Mostrar puntuación */}
+      <Typography variant="subtitle1" align="center" color="text.secondary" gutterBottom>
+        Puntuación general: {puntuacion}
       </Typography>
 
       <Button variant="contained" onClick={seleccionarObjetosAleatorios} sx={{ mb: 3 }}>
