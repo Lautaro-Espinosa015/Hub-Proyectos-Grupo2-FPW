@@ -22,6 +22,13 @@ const juegosPorNivel = {
       descripcion: 'Aprende los días de la semana en inglés jugando a adivinar el día correcto.',
       ruta: '/AdivinaDia'
     },
+
+{
+      nombre: 'Juego de Memoria 2',
+      descripcion: 'Aprende vocabulario básico en inglés con este divertido juego de memoria.',
+      ruta: '/juegomemoria'
+    },
+
     // Aquí podrías añadir más juegos para el Nivel 1 en el futuro
   ],
   2: [{
