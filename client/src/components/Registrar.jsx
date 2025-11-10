@@ -19,26 +19,36 @@ import {
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import PlacementModalContent from './PlacementModalContent'; // Importamos el contenido del modal
 
+// Componente funcional para el registro de nuevos usuarios.
 function Registrar({ onClose, onSwitchToLogin }) {
+  // Hook para acceder a la función de registro del contexto de autorización.
   const { register } = useAutorizacion();
+  
+  // Estados para los campos del formulario.
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [role, setRole] = useState('normal'); // 'normal' o 'student'
+  
+  // Estado para controlar la visibilidad del modal de selección de nivel.
   const [isPlacementModalOpen, setIsPlacementModalOpen] = useState(false);
 
+  // Estados para manejar mensajes de error y éxito.
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
 
+  // Estados para mostrar/ocultar las contraseñas.
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
+  // Función que se ejecuta al enviar el formulario.
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
     setSuccess('');
   
+    // Validación básica: las contraseñas deben coincidir.
     if (password !== confirmPassword) {
       setError('Las contraseñas no coinciden.');
       return;
@@ -46,7 +56,7 @@ function Registrar({ onClose, onSwitchToLogin }) {
 
     // Lógica condicional basada en el rol
     if (role === 'normal') {
-      // Si es usuario normal, registrar directamente.
+      // Si es un usuario 'normal', se llama a la función de registro directamente con nivel 0.
       const result = await register({
         username,
         email,
@@ -55,13 +65,13 @@ function Registrar({ onClose, onSwitchToLogin }) {
         nivel: 0,
       });
       if (result.success) {
-        setSuccess(result.message);
-        setTimeout(() => onClose(), 2000); // Cerrar todo el panel después de 2s
+        setSuccess(result.message); // Muestra mensaje de éxito.
+        setTimeout(() => onClose(), 2000); // Cierra el panel de registro después de 2 segundos.
       } else {
         setError(result.message);
       }
     } else {
-      // Si es alumno, abrir el modal para seleccionar nivel.
+      // Si es un 'student', no se registra todavía, sino que se abre el modal para que seleccione su nivel.
       // No registramos todavía.
       setIsPlacementModalOpen(true);
     }
@@ -69,6 +79,7 @@ function Registrar({ onClose, onSwitchToLogin }) {
 
   // Esta función se llama desde el modal cuando se selecciona un nivel.
   const handleLevelSelectAndRegister = async (level) => {
+    // Ahora sí, con el nivel seleccionado, se llama a la función de registro.
     const result = await register({
       username,
       email,
@@ -77,11 +88,11 @@ function Registrar({ onClose, onSwitchToLogin }) {
       nivel: level,
     });
     if (result.success) {
-      setSuccess(result.message);
-      setIsPlacementModalOpen(false); // Cierra el modal
-      setTimeout(() => onClose(), 2000); // Cierra el panel de registro después de 2s
+      setSuccess(result.message); // Muestra mensaje de éxito.
+      setIsPlacementModalOpen(false); // Cierra el modal de selección de nivel.
+      setTimeout(() => onClose(), 2000); // Cierra todo el panel de registro después de 2 segundos.
     } else {
-      setError(result.message);
+      setError(result.message); // Muestra el error.
       setIsPlacementModalOpen(false); // Cierra el modal incluso si hay error
     }
   };
@@ -100,10 +111,12 @@ function Registrar({ onClose, onSwitchToLogin }) {
 
   return (
     <>
+      {/* Muestra alertas de error o éxito si existen. */}
       {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
       {success && <Alert severity="success" sx={{ mb: 2 }}>{success}</Alert>}
 
       <Box component="form" onSubmit={handleSubmit} noValidate>
+        {/* Campos de texto para el formulario de registro. */}
         <TextField
           margin="normal"
           required
@@ -178,6 +191,7 @@ function Registrar({ onClose, onSwitchToLogin }) {
           }}
         />
 
+        {/* Selección de tipo de cuenta (rol). */}
         <FormControl component="fieldset" margin="normal" fullWidth>
           <FormLabel component="legend">Tipo de Cuenta</FormLabel>
           <RadioGroup row aria-label="role" name="role" value={role} onChange={(e) => setRole(e.target.value)}>
@@ -189,6 +203,7 @@ function Registrar({ onClose, onSwitchToLogin }) {
         <Button type="submit" fullWidth variant="contained" sx={{ mt: 2, mb: 2 }}>
           Registrar
         </Button>
+        {/* Enlace para cambiar al formulario de inicio de sesión. */}
         <Typography variant="body2" align="center">
           ¿Ya tienes una cuenta?{' '}
           <Link component="button" type="button" onClick={onSwitchToLogin} sx={{ verticalAlign: 'baseline' }}>
@@ -197,6 +212,7 @@ function Registrar({ onClose, onSwitchToLogin }) {
         </Typography>
       </Box>
 
+      {/* Modal para la selección de nivel de inglés, se muestra solo si isPlacementModalOpen es true. */}
       <Modal open={isPlacementModalOpen} onClose={() => setIsPlacementModalOpen(false)} aria-labelledby="placement-test-modal-title">
         <Box sx={modalStyle}>
           <PlacementModalContent onLevelSelect={handleLevelSelectAndRegister} />
@@ -206,4 +222,5 @@ function Registrar({ onClose, onSwitchToLogin }) {
   );
 }
 
+// Exporta el componente para ser usado en otras partes de la aplicación.
 export default Registrar;
