@@ -1,5 +1,17 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { Box, Typography, Button, Card, CardContent, CardActionArea, Grid, Paper, Container, Chip, Alert } from '@mui/material';
+import {
+  Box,
+  Typography,
+  Button,
+  Card,
+  CardContent,
+  CardActionArea,
+  Grid,
+  Paper,
+  Container,
+  Chip,
+  Alert
+} from '@mui/material';
 import ReplayIcon from '@mui/icons-material/Replay';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CancelIcon from '@mui/icons-material/Cancel';
@@ -51,7 +63,6 @@ const quizData = [
     ],
   },
 ];
-
 export default function QuizSimulator() {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [score, setScore] = useState(0);
@@ -118,8 +129,7 @@ export default function QuizSimulator() {
     setGameOver(false);
     audioRef.current.pause();
   };
-
-  if (gameOver) {
+    if (gameOver) {
     return (
       <Container maxWidth="md" sx={{ py: 5, textAlign: 'center', bgcolor: '#e3f2fd', borderRadius: 2 }}>
         <Paper elevation={6} sx={{ p: 4, borderRadius: 2, bgcolor: 'white' }}>
@@ -149,7 +159,7 @@ export default function QuizSimulator() {
         <Typography variant="h4" component="h1" gutterBottom fontWeight="bold" color="#1A237E">
           Quiz de Vocabulario
         </Typography>
-        <Chip label={`Puntaje: ${score}`} sx={{ mb: 3, fontSize: '1rem', bgcolor: '#d1c4e9', color: '#1A237E' }} />
+        <Chip label={`Puntaje: ${score}`} sx={{ mb: 3, fontSize: '1rem', bgcolor: '#BBDEFB', color: '#1A237E' }} />
 
         {/* Sección de la Pregunta */}
         <Box sx={{ mb: 4, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
@@ -158,13 +168,13 @@ export default function QuizSimulator() {
             src={characterAvatar}
             alt="Character Avatar"
             sx={{ width: 100, height: 100, borderRadius: '50%', mb: 2 }}
-          /> 
+          />
           <Typography variant="h5" sx={{ mb: 2, color: '#1A237E' }}>{currentQuestion.questionText}</Typography>
           <Box
             component="img"
             src={currentQuestion.questionImage}
-            alt="Objeto de la pregunta" // eslint-disable-line
-            sx={{ width: 150, height: 150, objectFit: 'contain', border: `2px solid #BBDEFB`, borderRadius: 2, p: 1 }}
+            alt="Objeto de la pregunta"
+            sx={{ width: 150, height: 150, objectFit: 'contain', border: '2px solid #BBDEFB', borderRadius: 2, p: 1 }}
           />
         </Box>
 
@@ -172,10 +182,15 @@ export default function QuizSimulator() {
         <Box sx={{ minHeight: 60, display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 2 }}>
           {feedback.message && (
             <Alert
-              severity={feedback.type === 'correct' ? 'success' : 'error'} // These map to pastel green/red by default in MUI themes
+              severity={feedback.type === 'correct' ? 'success' : 'error'}
               iconMapping={{
                 success: <CheckCircleIcon fontSize="inherit" />,
                 error: <CancelIcon fontSize="inherit" />,
+              }}
+              sx={{
+                bgcolor: feedback.type === 'correct' ? '#c8e6c9' : '#ffcdd2',
+                color: '#1A237E',
+                fontWeight: 'medium',
               }}
             >
               {feedback.message}
@@ -194,12 +209,13 @@ export default function QuizSimulator() {
                   height: '100%',
                   borderRadius: 2,
                   boxShadow: 3,
-                  bgcolor: isAnswering ? '#E0E0E0' : 'white', // Light grey when disabled, white otherwise
-                  '&:hover': { bgcolor: '#F5F5F5' }, // Lighter grey on hover
+                  bgcolor: isAnswering ? '#E0E0E0' : 'white',
+                  '&:hover': { bgcolor: '#F5F5F5' },
+                  border: '1px solid #BBDEFB',
                 }}
               >
                 <CardContent>
-                  <Typography variant="h6" fontWeight="medium">
+                  <Typography variant="h6" fontWeight="medium" color="#1A237E">
                     {option.optionText}
                   </Typography>
                 </CardContent>
