@@ -19,6 +19,8 @@ import AdivinaDia from './components/EnglishGames/Nivel 1/AdivinaDia.jsx';
 import BodyClickGame from './components/EnglishGames/Nivel 2/BodyClickGame.jsx'
 import JuegoVerbosD from './components/EnglishGames/Nivel 2/JuegoVerbosD.jsx';
 import JuegoMemoria from './components/EnglishGames/Nivel 1/JuegoMemoria.jsx';
+import YesNo from './components/EnglishGames/Nivel 1/YesNo.jsx';
+import ConversacionJuego from './components/EnglishGames/Nivel 1/ConversacionJuego.jsx';
 
 import QuizSimulator from './components/EnglishGames/Nivel 1/QuizSimulator.jsx';
 import AdvancedQuizSimulator from './components/EnglishGames/Nivel 3/AdvancedQuizSimulator.jsx';
@@ -58,6 +60,8 @@ function App() {
         <Route path='QuizSimulator' element={<QuizSimulator />} />
         <Route path='AdvancedQuizSimulator' element={<AdvancedQuizSimulator />} />
         <Route path='ConversationalSimulator' element={<ConversationalSimulator />} />
+        <Route path='YesNo' element={<YesNo />} />
+        <Route path='ConversacionJuego' element={<ConversacionJuego />} />
 
 
         <Route path='BrianEstradaProfile' element={<BrianEstradaProfile />} />

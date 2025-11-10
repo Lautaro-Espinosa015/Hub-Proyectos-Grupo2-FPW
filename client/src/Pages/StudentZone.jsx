@@ -35,6 +35,17 @@ const juegosPorNivel = {
       ruta: '/QuizSimulator'
     },
 
+    {
+      nombre: 'Juego de Sí y No',
+      descripcion: 'Aprende a responder preguntas básicas en inglés con este juego interactivo.',
+      ruta: '/YesNo'
+    },
+
+    {
+      nombre: 'Juego de Conversación',
+      descripcion: 'Practica diálogos simples en inglés con este juego interactivo.',
+      ruta: '/ConversacionJuego'
+    },
 
     // Aquí podrías añadir más juegos para el Nivel 1 en el futuro
   ],
