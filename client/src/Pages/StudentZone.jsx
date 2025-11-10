@@ -83,23 +83,24 @@ function StudentZone() {
   const { level } = useParams(); // Obtiene el nivel de la URL (ej: /student-zone/1)
   const userLevel = currentUser?.nivel;
 
-  // 1. Proteger la ruta: si no está logueado o no es estudiante, no puede entrar.
-  if (!isLoggedIn || currentUser?.rol !== 'student') {
-    // Podríamos redirigir a la home o mostrar un error.
-    // Por ahora, una simple alerta.
+  // 1. Proteger la ruta: si no está logueado o no es estudiante/admin, no puede entrar.
+  if (!isLoggedIn || (currentUser?.rol !== 'student' && currentUser?.rol !== 'admin')) {
     return (
       <Container sx={{ py: 4 }}>
-        <Alert severity="error">Acceso denegado. Esta zona es solo para estudiantes registrados.</Alert>
+        <Alert severity="error">Acceso denegado. Esta zona es solo para usuarios registrados.</Alert>
       </Container>
     );
   }
 
-  // 2. Consistencia: si el usuario intenta acceder a un nivel que no es el suyo, lo redirigimos.
-  if (userLevel && userLevel.toString() !== level) {
+  // 2. Consistencia para ESTUDIANTES: si intenta acceder a un nivel que no es el suyo, lo redirigimos.
+  // Los administradores pueden ver cualquier nivel.
+  if (currentUser?.rol === 'student' && userLevel && userLevel.toString() !== level) {
     return <Navigate to={`/student-zone/${userLevel}`} replace />;
   }
 
-  const infoNivel = nivelesInfo[userLevel];
+  // 3. Obtener la información del nivel desde la URL, no desde el usuario.
+  const currentLevel = level || userLevel;
+  const infoNivel = nivelesInfo[currentLevel];
 
 
   if (!infoNivel) {
@@ -119,8 +120,8 @@ function StudentZone() {
         
         {/* --- Sección de Juegos --- */}
         <Grid container spacing={4} mt={2} justifyContent="center">
-          {juegosPorNivel[userLevel]?.length > 0 ? (
-            juegosPorNivel[userLevel].map((juego) => (
+          {juegosPorNivel[currentLevel]?.length > 0 ? (
+            juegosPorNivel[currentLevel].map((juego) => (
               <Grid item key={juego.nombre} xs={12} sm={8} md={6}>
                 <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column', textAlign: 'left' }}>
                   <CardContent sx={{ flexGrow: 1 }}>

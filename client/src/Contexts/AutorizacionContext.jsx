@@ -26,7 +26,13 @@ export function AutorizacionProvider({ children }) {
         headers: { 'Content-Type': 'application/json' }
       });
       if (res.data.success) {
-        setCurrentUser(res.data.user);
+        // Asegurarse de que el rol esté presente
+        const userData = {
+          ...res.data.user,
+          rol: res.data.user.rol || 'normal' // Valor por defecto si no existe
+        };
+        console.log('Usuario autenticado:', userData); // Para debugging
+        setCurrentUser(userData);
         setIsLoggedIn(true);
         return { success: true };
       } else {
@@ -67,13 +73,25 @@ export function AutorizacionProvider({ children }) {
     }
   }, [currentUser]);
 
+  // Función auxiliar para verificar el rol del usuario
+  const hasRole = useCallback((role) => {
+    return currentUser?.rol === role;
+  }, [currentUser]);
+
+  // Función auxiliar para verificar si el usuario es admin
+  const isAdmin = useCallback(() => {
+    return hasRole('admin');
+  }, [hasRole]);
+
   const contextValue = useMemo(() => ({
     currentUser,
     isLoggedIn,
     login,
     logout,
     register,
-  }), [currentUser, isLoggedIn, login, logout, register]);
+    hasRole,
+    isAdmin,
+  }), [currentUser, isLoggedIn, login, logout, register, hasRole, isAdmin]);
 
   return (
     <AutorizacionContext.Provider value={contextValue}>
