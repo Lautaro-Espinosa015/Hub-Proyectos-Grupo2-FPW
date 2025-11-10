@@ -1,3 +1,7 @@
+//NO SE USA
+
+
+
 import { useState, useEffect } from "react";
 
 function Quiz() {

@@ -18,7 +18,7 @@ export function AutorizacionProvider({ children }) {
 
   const [isLoggedIn, setIsLoggedIn] = useState(!!currentUser);
 
-  // ✅ Login
+  //  Login
   const login = useCallback(async (credenciales) => {
     try {
       console.log("Credenciales enviadas:", credenciales);
@@ -44,7 +44,7 @@ export function AutorizacionProvider({ children }) {
     }
   }, []);
 
-  // ✅ Registro
+  //  Registro
   const register = useCallback(async (datos) => {
     try {
       const res = await axios.post(`${BASE_URL}/register`, datos, {

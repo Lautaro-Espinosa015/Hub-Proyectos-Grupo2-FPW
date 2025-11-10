@@ -33,6 +33,7 @@ import LautaroEspinosaProfile from './components/Grupo02-Profiles/LautaroEspinos
 import MelaniSilvaProfile from './components/Grupo02-Profiles/MelaniSilvaProfile.jsx';
 
 
+//rUTAS PREDETERMINADAS 
 function App() {
   return (
     <Routes>

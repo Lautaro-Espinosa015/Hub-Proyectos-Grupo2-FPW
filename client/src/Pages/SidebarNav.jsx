@@ -1,17 +1,24 @@
+// Importa React y el hook useState para manejar el estado de los menús desplegables.
 import React, { useState } from 'react';
+// Importa NavLink para la navegación, que añade estilos a los enlaces activos.
 import { NavLink } from 'react-router-dom';
+// Importa componentes de Material-UI para construir la interfaz de la barra de navegación.
 import { Box, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Menu, MenuItem, Typography } from '@mui/material';
+// Importa los iconos que se usarán en la barra de navegación.
 import { Home, Folder, Code, CodeSharp, Pets, People, SportsEsports, ArrowDropDown, Add, Login, Logout, Explore, Build, RecordVoiceOver } from '@mui/icons-material';
 
+// Importa el hook personalizado para acceder al contexto de autorización (estado de login, datos del usuario, etc.).
 import { useAutorizacion } from '../Contexts/AutorizacionContext';
 
 
-// 1. Estructura de datos limpia y sin duplicados
+// 1. Estructura de datos para los elementos de navegación generales.
+// Centralizar esto en un array de objetos hace que la barra de navegación sea fácil de mantener y modificar.
 const navItems = [
   { text: 'Inicio', icon: <Home />, to: '/' },
   
   { text: 'Sobre Nosotros', icon: <People />, to: '/aboutus' },
 
+ // P1royecto 01
   { text: "Proyecto 01", icon: <Code /> , 
     subItems: [
       { text: 'Proyecto HTML : Espinosa Lautaro Eduardo', to: '/Proyecto01_Espinosa' },
@@ -50,7 +57,8 @@ const navItems = [
   },
 ];
 
-// Definimos la estructura del menú para los estudiantes
+// 2. Configuración de los menús específicos para estudiantes, organizados por nivel.
+// Esto permite mostrar un menú diferente según el nivel del estudiante logueado.
 const studentNavConfig = {
   1: {
     text: 'Zona Explorador',
@@ -69,7 +77,7 @@ const studentNavConfig = {
   },
 };
 
-// Menú especial para administradores que agrupa todos los niveles de inglés
+// 3. Configuración del menú especial para administradores, que les da acceso a todos los niveles de inglés.
 const adminEnglishMenu = {
   text: 'English Levels',
   icon: <Explore />,
@@ -80,12 +88,15 @@ const adminEnglishMenu = {
   ],
 };
 
+// Componente principal de la barra de navegación.
 function SidebarNav({ onLoginClick }) {
+  // Obtiene el estado de autenticación y los datos del usuario del contexto.
   const { isLoggedIn, currentUser, isAdmin } = useAutorizacion();
+  // Estado para gestionar qué menú desplegable está abierto y dónde debe anclarse.
   const [anchorEl, setAnchorEl] = useState(null);
   const [openMenuText, setOpenMenuText] = useState('');
   
-  // Debugging logs
+  // Logs de depuración para verificar el estado de autenticación en la consola del navegador.
   console.log('Estado de autenticación:', {
     isLoggedIn,
     currentUser,
@@ -93,8 +104,11 @@ function SidebarNav({ onLoginClick }) {
     rol: currentUser?.rol
   });
 
+  // Función para abrir un menú desplegable.
   const handleMenuClick = (event, item) => {
+    // 'event.currentTarget' es el elemento del DOM que se clickeó (el botón), que sirve como ancla para el menú.
     setAnchorEl(event.currentTarget);
+    // Guarda el texto del item para saber qué menú está abierto.
     setOpenMenuText(item.text);
   };
 
@@ -103,11 +117,12 @@ function SidebarNav({ onLoginClick }) {
     setOpenMenuText('');
   };
 
-  // Filtramos los items de navegación. Mostramos solo los que no requieren autenticación
-  // o si el usuario ha iniciado sesión.
+  // Filtra los items de navegación generales. Solo muestra los que no tienen la propiedad 'auth'
+  // o si el usuario ha iniciado sesión. (Actualmente no se usa la propiedad 'auth', pero es una buena práctica tenerlo).
   const visibleNavItems = navItems.filter(item => !item.auth || isLoggedIn);
 
   return (
+    // Contenedor principal de la barra de navegación.
     <Box
       component="nav"
       sx={{
@@ -119,12 +134,15 @@ function SidebarNav({ onLoginClick }) {
       }}
     >
       <List sx={{ display: 'flex', flexDirection: 'row', p: 0 }}>
-        {/* Renderizado condicional del menú de estudiante */}
+        {/* --- MENÚ DE ESTUDIANTE --- */}
+        {/* Se renderiza solo si el usuario está logueado, es un 'student' y tiene un nivel asignado (> 0). */}
         {isLoggedIn && currentUser?.rol === 'student' && currentUser?.nivel > 0 && (
           (() => {
+            // Obtiene la configuración del menú correspondiente al nivel del estudiante.
             const studentNavItem = studentNavConfig[currentUser.nivel];
             if (!studentNavItem) return null;
 
+            // Comprueba si este es el menú que está actualmente abierto.
             const isOpen = openMenuText === studentNavItem.text;
             return (
               <ListItem key={studentNavItem.text} disablePadding>
@@ -135,6 +153,7 @@ function SidebarNav({ onLoginClick }) {
                   <ListItemIcon sx={{ minWidth: 'auto', justifyContent: 'center', color: 'inherit' }}>
                     {studentNavItem.icon}
                   </ListItemIcon>
+                  {/* El texto del botón incluye una flecha para indicar que es un menú desplegable. */}
                   <ListItemText
                     primary={
                       <>
@@ -145,6 +164,7 @@ function SidebarNav({ onLoginClick }) {
                     primaryTypographyProps={{ variant: 'caption', noWrap: true, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
                   />
                 </ListItemButton>
+                {/* Componente del menú que se muestra u oculta. */}
                 <Menu
                   anchorEl={anchorEl}
                   open={isOpen}
@@ -161,13 +181,14 @@ function SidebarNav({ onLoginClick }) {
           })()
         )}
 
-        {/* Separador visual si el menú de estudiante está presente y menú adicional para admin */}
+        {/* Separador visual si el menú de estudiante está presente. */}
         {isLoggedIn && currentUser?.rol === 'student' && currentUser?.nivel > 0 && (
           <Box sx={{ borderLeft: '1px solid', borderColor: 'divider', mx: 1 }} />
         )}
 
-        {/* Menú exclusivo para administradores que agrupa los 3 niveles de inglés */}
+        {/* --- MENÚ DE ADMINISTRADOR --- */}
         {console.log('Evaluando condición admin:', { isLoggedIn, isAdmin: isAdmin() })}
+        {/* Se renderiza solo si el usuario está logueado y la función isAdmin() devuelve true. */}
         {isLoggedIn && isAdmin() && (
           <>
             <ListItem disablePadding>
@@ -253,10 +274,12 @@ function SidebarNav({ onLoginClick }) {
           </>
         )}
 
-        {/* 2. Bucle de renderizado único y corregido */}
+        {/* --- MENÚS GENERALES --- */}
+        {/* Itera sobre los items de navegación generales y los renderiza. */}
         {visibleNavItems.map((item) => {
-          // Renderiza un menú desplegable si el item tiene 'subItems'
+          // Si el item tiene un array 'subItems', se renderiza como un menú desplegable.
           if (item.subItems) {
+            // Comprueba si este es el menú que está actualmente abierto.
             const isOpen = openMenuText === item.text;
             return (
               <ListItem key={item.text} disablePadding>
@@ -267,7 +290,7 @@ function SidebarNav({ onLoginClick }) {
                   <ListItemIcon sx={{ minWidth: 'auto', justifyContent: 'center', color: isOpen ? 'primary.main' : 'inherit' }}>
                     {item.icon}
                   </ListItemIcon>
-                  {/* 3. Corrección del ListItemText para incluir el icono de flecha */}
+                  {/* El texto del botón incluye una flecha para indicar que es un menú. */}
                   <ListItemText
                     primary={
                       <>
@@ -293,7 +316,7 @@ function SidebarNav({ onLoginClick }) {
             );
           }
 
-          // Renderiza un enlace normal si no hay 'subItems'
+          // Si no tiene 'subItems', se renderiza como un enlace de navegación simple.
           return (
             <ListItem key={item.text} disablePadding>
               <ListItemButton
@@ -301,6 +324,7 @@ function SidebarNav({ onLoginClick }) {
                 to={item.to}
                 end={item.to === '/'}
                 sx={{ py: 1, px: 2, flexDirection: 'column', minWidth: '120px', textAlign: 'center', '&.active': { bgcolor: 'action.selected', color: 'primary.main', '& .MuiListItemIcon-root': { color: 'primary.main' } } }}
+                // La clase '.active' es añadida automáticamente por NavLink y se usa para aplicar estilos al enlace de la página actual.
             >
               <ListItemIcon sx={{ minWidth: 'auto', justifyContent: 'center' }}>
                 {item.icon}
@@ -312,10 +336,11 @@ function SidebarNav({ onLoginClick }) {
         })}
 
 
-        {/* Separador visual antes del botón de login/logout */}
+        {/* Separador visual antes del botón de login/logout. */}
         <Box sx={{ borderLeft: '1px solid', borderColor: 'divider', mx: 1 }} />
 
-        {/* 4. Botón dinámico de Login/Logout */}
+        {/* --- BOTÓN DE LOGIN/LOGOUT --- */}
+        {/* Renderizado condicional: muestra un botón u otro dependiendo del estado de 'isLoggedIn'. */}
         {isLoggedIn ? (
           <ListItem disablePadding>
             <ListItemButton onClick={onLoginClick} sx={{ py: 1, px: 2, flexDirection: 'column', minWidth: '120px', textAlign: 'center' }}>
