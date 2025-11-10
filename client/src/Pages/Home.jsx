@@ -167,7 +167,7 @@ function Home() {
                   </Stack>
                 </CardContent>
                 <Box sx={{ p: 2 }}>
-                  <Button component={Link} to="/pet-registry" size="small" variant="contained">Ver Demo</Button>
+                  <Button component={Link} to="/PetRegistry" size="small" variant="contained">Ver Demo</Button>
                 </Box>
               </Card>
             </Grid>
