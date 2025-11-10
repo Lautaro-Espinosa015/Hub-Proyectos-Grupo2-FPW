@@ -87,24 +87,24 @@ export default function ArrastraLaImagen() {
   };
 
   return (
-    <Box sx={{ maxWidth: 960, mx: 'auto', py: 4 }}>
-      <Typography variant="h4" align="center" gutterBottom fontWeight="bold" color="primary">
+    <Box sx={{ maxWidth: 960, mx: 'auto', py: 4, bgcolor: '#e3f2fd', borderRadius: 2, p: 3 }}>
+      <Typography variant="h4" align="center" gutterBottom fontWeight="bold" color="#1A237E">
         Relaciona el objeto con su nombre en Inglés
       </Typography>
 
       {/* Mostrar puntuación */}
-      <Typography variant="subtitle1" align="center" color="text.secondary" gutterBottom>
+      <Typography variant="subtitle1" align="center" color="#424242" gutterBottom>
         Puntuación general: {puntuacion}
       </Typography>
 
-      <Button variant="contained" onClick={seleccionarObjetosAleatorios} sx={{ mb: 3 }}>
+      <Button variant="contained" onClick={seleccionarObjetosAleatorios} sx={{ mb: 3, bgcolor: '#90CAF9', color: '#1A237E', '&:hover': { bgcolor: '#64B5F6' } }}>
         Nueva ronda
       </Button>
 
       <Grid container spacing={4}>
         {/* Objetos arrastrables */}
         <Grid item xs={12} md={6}>
-          <Typography variant="h6" align="center" color="text.secondary" gutterBottom>
+          <Typography variant="h6" align="center" color="#424242" gutterBottom>
             Objetos
           </Typography>
           <Box sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: 2 }}>
@@ -113,8 +113,8 @@ export default function ArrastraLaImagen() {
                 key={objeto.id}
                 draggable
                 onDragStart={(e) => iniciarArrastre(e, objeto.id)}
-                onClick={() => reproducirAudio(objeto.audio)}
-                sx={{ width: 120, cursor: 'grab', textAlign: 'center', boxShadow: 2 }}
+                onClick={() => reproducirAudio(objeto.audio)} // eslint-disable-line
+                sx={{ width: 120, cursor: 'grab', textAlign: 'center', boxShadow: 2, bgcolor: 'white' }}
               >
                 <CardContent>
                   <img
@@ -131,7 +131,7 @@ export default function ArrastraLaImagen() {
 
         {/* Casilleros de destino */}
         <Grid item xs={12} md={6}>
-          <Typography variant="h6" align="center" color="text.secondary" gutterBottom>
+          <Typography variant="h6" align="center" color="#424242" gutterBottom>
             Casilleros
           </Typography>
           <Box sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: 2 }}>
@@ -144,13 +144,13 @@ export default function ArrastraLaImagen() {
                   width: 120,
                   height: 127,
                   borderRadius: 1,
-                  border: '1px solid #000000ff',
+                  border: '2px dashed #d1c4e9',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
                   fontWeight: 'bold',
-                  bgcolor: objetosColocados[objeto.id] ? 'success.main' : 'grey.100',
-                  color: objetosColocados[objeto.id] ? 'common.white' : '#000',
+                  bgcolor: objetosColocados[objeto.id] ? '#c8e6c9' : '#fafafa',
+                  color: objetosColocados[objeto.id] ? '#4A4A4A' : '#4A4A4A',
                 }}
               >
                 {objeto.etiqueta}

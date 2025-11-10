@@ -68,8 +68,8 @@ function AdivinaDiaSimple() {
   }
 
   return (
-    <Container className="mt-4">
-      <Card style={{ width: '30rem', margin: 'auto' }}>
+    <Container className="mt-4" style={{ backgroundColor: '#e3f2fd', padding: '2rem', borderRadius: '15px' }}>
+      <Card style={{ width: '30rem', margin: 'auto', border: `2px solid #BBDEFB` }}>
         <Card.Body>
           <Card.Title className="text-center">
             <h2>¿Cuál es el día en Inglés?</h2>
@@ -77,12 +77,12 @@ function AdivinaDiaSimple() {
 
           {/* Puntuación general */}
           <Card.Text className="text-center text-muted">
-            Puntuación general: {puntuacion}
+            <span style={{ color: '#424242' }}>Puntuación general: {puntuacion}</span>
           </Card.Text>
 
           {/* Día en español */}
-          <div className="bg-light p-4 rounded text-center my-3">
-            <h1 className="display-4 fw-bold">{preguntaDia.es}</h1>
+          <div className="p-4 rounded text-center my-3" style={{ backgroundColor: '#F5F5F5' }}>
+            <h1 className="display-4 fw-bold" style={{ color: '#1A237E' }}>{preguntaDia.es}</h1>
           </div>
 
           {/* Opciones en inglés */}
@@ -90,19 +90,19 @@ function AdivinaDiaSimple() {
             {opciones.map((opcion) => (
               <Col xs={12} key={opcion.en}>
                 <Button
-                  variant="outline-primary"
+                  variant="light"
                   size="lg"
                   className="w-100"
                   onClick={() => RevisarRespuesta(opcion.en)}
                   disabled={haGanado}
                   style={
                     haGanado && opcion.en === preguntaDia.en
-                      ? {
-                          backgroundColor: '#28a745',
-                          color: 'white',
-                          borderColor: '#28a745',
-                        }
-                      : {}
+                      ? { // Estilo para respuesta correcta (pastel green)
+                          backgroundColor: '#c8e6c9', 
+                          color: '#1A237E', 
+                          borderColor: '#a5d6a7', 
+                        } // Estilo normal
+                      : { color: '#1A237E', borderColor: '#BBDEFB' } // Default button text and border
                   }
                 >
                   {opcion.en}
@@ -114,7 +114,7 @@ function AdivinaDiaSimple() {
           {/* Feedback */}
           {mensajeFeedback && (
             <Alert
-              variant={haGanado ? 'success' : 'danger'}
+              variant={haGanado ? 'success' : 'danger'} // Bootstrap variants will map to default success/danger colors, which are usually good.
               className="mt-3 text-center"
             >
               <h3>{mensajeFeedback}</h3>
@@ -124,7 +124,7 @@ function AdivinaDiaSimple() {
           {/* Botón de jugar de nuevo */}
           {haGanado && (
             <div className="d-grid gap-2 mt-3">
-              <Button size="lg" onClick={generarJuego} variant="success">
+              <Button size="lg" onClick={generarJuego} style={{ backgroundColor: '#90CAF9', borderColor: '#90CAF9', color: '#1A237E' }}>
                 Jugar de Nuevo
               </Button>
             </div>

@@ -121,10 +121,10 @@ export default function QuizSimulator() {
 
   if (gameOver) {
     return (
-      <Container maxWidth="md" sx={{ py: 5, textAlign: 'center' }}>
-        <Paper elevation={6} sx={{ p: 4, borderRadius: 2 }}>
-          <Typography variant="h4" color="primary" gutterBottom>¡Juego Terminado!</Typography>
-          <Typography variant="h5" sx={{ mb: 3 }}>
+      <Container maxWidth="md" sx={{ py: 5, textAlign: 'center', bgcolor: '#e3f2fd', borderRadius: 2 }}>
+        <Paper elevation={6} sx={{ p: 4, borderRadius: 2, bgcolor: 'white' }}>
+          <Typography variant="h4" color="#1A237E" gutterBottom>¡Juego Terminado!</Typography>
+          <Typography variant="h5" sx={{ mb: 3, color: '#1A237E' }}>
             Tu puntaje final es: {score} de {quizData.length}
           </Typography>
           <Button
@@ -144,12 +144,12 @@ export default function QuizSimulator() {
   if (!currentQuestion) return <p>Cargando quiz...</p>;
 
   return (
-    <Container maxWidth="md" sx={{ py: 5 }}>
-      <Paper elevation={6} sx={{ p: { xs: 2, md: 4 }, textAlign: 'center', borderRadius: 2 }}>
-        <Typography variant="h4" component="h1" gutterBottom fontWeight="bold" color="primary">
+    <Container maxWidth="md" sx={{ py: 5, bgcolor: '#e3f2fd', borderRadius: 2 }}>
+      <Paper elevation={6} sx={{ p: { xs: 2, md: 4 }, textAlign: 'center', borderRadius: 2, bgcolor: 'white' }}>
+        <Typography variant="h4" component="h1" gutterBottom fontWeight="bold" color="#1A237E">
           Quiz de Vocabulario
         </Typography>
-        <Chip label={`Puntaje: ${score}`} color="secondary" sx={{ mb: 3, fontSize: '1rem' }} />
+        <Chip label={`Puntaje: ${score}`} sx={{ mb: 3, fontSize: '1rem', bgcolor: '#d1c4e9', color: '#1A237E' }} />
 
         {/* Sección de la Pregunta */}
         <Box sx={{ mb: 4, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
@@ -158,13 +158,13 @@ export default function QuizSimulator() {
             src={characterAvatar}
             alt="Character Avatar"
             sx={{ width: 100, height: 100, borderRadius: '50%', mb: 2 }}
-          />
-          <Typography variant="h5" sx={{ mb: 2 }}>{currentQuestion.questionText}</Typography>
+          /> 
+          <Typography variant="h5" sx={{ mb: 2, color: '#1A237E' }}>{currentQuestion.questionText}</Typography>
           <Box
             component="img"
             src={currentQuestion.questionImage}
-            alt="Objeto de la pregunta"
-            sx={{ width: 150, height: 150, objectFit: 'contain', border: '2px solid #ddd', borderRadius: 2, p: 1 }}
+            alt="Objeto de la pregunta" // eslint-disable-line
+            sx={{ width: 150, height: 150, objectFit: 'contain', border: `2px solid #BBDEFB`, borderRadius: 2, p: 1 }}
           />
         </Box>
 
@@ -172,7 +172,7 @@ export default function QuizSimulator() {
         <Box sx={{ minHeight: 60, display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 2 }}>
           {feedback.message && (
             <Alert
-              severity={feedback.type === 'correct' ? 'success' : 'error'}
+              severity={feedback.type === 'correct' ? 'success' : 'error'} // These map to pastel green/red by default in MUI themes
               iconMapping={{
                 success: <CheckCircleIcon fontSize="inherit" />,
                 error: <CancelIcon fontSize="inherit" />,
@@ -194,8 +194,8 @@ export default function QuizSimulator() {
                   height: '100%',
                   borderRadius: 2,
                   boxShadow: 3,
-                  bgcolor: isAnswering ? 'action.disabledBackground' : 'background.paper',
-                  '&:hover': { bgcolor: 'action.hover' },
+                  bgcolor: isAnswering ? '#E0E0E0' : 'white', // Light grey when disabled, white otherwise
+                  '&:hover': { bgcolor: '#F5F5F5' }, // Lighter grey on hover
                 }}
               >
                 <CardContent>

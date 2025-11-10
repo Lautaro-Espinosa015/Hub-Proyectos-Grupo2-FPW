@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, useCallback } from "react";
 
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
@@ -14,6 +14,10 @@ import dogImg from "../../../assets/Img/ImgEnglishGames/YesNo/dog.png";
 import catImg from "../../../assets/Img/ImgEnglishGames/YesNo/cat.png";
 import carImg from "../../../assets/Img/ImgEnglishGames/YesNo/car.png";
 import ballImg from "../../../assets/Img/ImgEnglishGames/YesNo/ball.png";
+
+// --- Audios ---
+import audioCorrect from "../../../assets/Sounds/ConversationalSimulator/correct_feedback.mp3"; // Placeholder for "Correct!"
+import audioIncorrect from "../../../assets/Sounds/ConversationalSimulator/incorrect_feedback.mp3"; // Placeholder for "Try again"
 
 export default function YesNoGame() {
   const questions = [
@@ -46,20 +50,38 @@ export default function YesNoGame() {
   const [step, setStep] = useState(0);
   const [feedback, setFeedback] = useState("");
   const [feedbackType, setFeedbackType] = useState("success"); // "success" | "error"
+  const [isAnswering, setIsAnswering] = useState(false);
+
+  const audioRef = useRef(new Audio());
+
+  const playSound = useCallback((audioPath, onEndedCallback = () => {}) => {
+    if (audioRef.current.src !== audioPath) {
+      audioRef.current.src = audioPath;
+    }
+    audioRef.current.pause();
+    audioRef.current.currentTime = 0;
+    audioRef.current.play().catch(error => console.error("Error de audio:", error));
+    audioRef.current.onended = onEndedCallback;
+  }, []);
 
   const handleAnswer = (answer) => {
+    if (isAnswering) return;
+
+    setIsAnswering(true);
     const isCorrect = answer === questions[step].correct;
 
     if (isCorrect) {
       setFeedbackType("success");
       setFeedback("¡Muy bien! / Great job!");
-      setTimeout(() => {
+      playSound(audioCorrect, () => {
         setFeedback("");
         setStep((prev) => (prev + 1) % questions.length);
-      }, 900);
+        setIsAnswering(false);
+      });
     } else {
       setFeedbackType("error");
       setFeedback("Inténtalo otra vez / Try again");
+      playSound(audioIncorrect, () => setIsAnswering(false));
     }
   };
 
@@ -69,7 +91,7 @@ export default function YesNoGame() {
     <Box
       sx={{
         minHeight: "100vh",
-        bgcolor: "green.50",
+        bgcolor: '#e3f2fd', // Very light pastel blue background
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
@@ -90,10 +112,10 @@ export default function YesNoGame() {
         <Card
           sx={{
             border: "4px solid",
-            borderColor: "black",
+            borderColor: '#BBDEFB', // Light blue border
             borderRadius: 4,
             boxShadow: 6,
-            bgcolor: "background.paper",
+            bgcolor: 'white', // Card background remains white for contrast
             p: 2,
           }}
         >
@@ -104,10 +126,10 @@ export default function YesNoGame() {
             sx={{
               height: 260,
               objectFit: "contain",
-              bgcolor: "grey.100",
+              bgcolor: '#F5F5F5', // Lighter background for image
               border: "4px solid",
-              borderColor: "black",
-              borderRadius: 2,
+              borderColor: '#BBDEFB', // Light blue border
+              borderRadius: 2, 
               mx: "auto",
               maxWidth: 320,
             }}
@@ -115,14 +137,14 @@ export default function YesNoGame() {
 
           <CardContent sx={{ textAlign: "center" }}>
             <Typography variant="h5" fontWeight="600" gutterBottom>
-              {current.english}
+              {current.english} 
             </Typography>
             <Typography
               variant="subtitle1"
-              color="text.secondary"
+              color="#424242" // Secondary text color
               gutterBottom
             >
-              {current.spanish}
+              {current.spanish} 
             </Typography>
 
             <Stack
@@ -134,30 +156,35 @@ export default function YesNoGame() {
               <Button
                 onClick={() => handleAnswer(true)}
                 variant="contained"
-                color="success"
+                disabled={isAnswering}
                 sx={{
                   border: "4px solid",
-                  borderColor: "black",
+                  borderColor: '#c8e6c9', // Pastel green border
                   borderRadius: 3,
                   px: 4,
                   py: 1.5,
                   fontWeight: "bold",
+                  bgcolor: '#c8e6c9', // Pastel green
+                  color: '#1A237E', // Dark indigo text
+                  '&:hover': { bgcolor: '#a5d6a7' } // Slightly darker green on hover
                 }}
               >
                 YES
               </Button>
-
               <Button
                 onClick={() => handleAnswer(false)}
                 variant="contained"
-                color="error"
+                disabled={isAnswering}
                 sx={{
                   border: "4px solid",
-                  borderColor: "black",
+                  borderColor: '#ffc0cb', // Pastel pink border
                   borderRadius: 3,
                   px: 4,
                   py: 1.5,
                   fontWeight: "bold",
+                  bgcolor: '#ffc0cb', // Pastel pink
+                  color: '#1A237E', // Dark indigo text
+                  '&:hover': { bgcolor: '#f48bb1' } // Slightly darker pink on hover
                 }}
               >
                 NO
