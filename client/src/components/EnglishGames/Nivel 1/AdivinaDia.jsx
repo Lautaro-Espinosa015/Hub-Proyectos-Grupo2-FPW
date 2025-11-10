@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Card, Button, Alert, Row, Col, Container } from 'react-bootstrap';
 
-// 📋 Lista Maestra de Días
+// Lista Maestra de Días
 const masterList = [
   { es: 'Lunes', en: 'Monday' },
   { es: 'Martes', en: 'Tuesday' },
@@ -13,14 +13,15 @@ const masterList = [
 ];
 
 function AdivinaDiaSimple() {
-  const [preguntaDia, setPreguntaDia] = useState(null);
-  const [opciones, setOpciones] = useState([]);
-  const [haGanado, setHaGanado] = useState(false);
-  const [mensajeFeedback, setMensajeFeedback] = useState(null);
-  const [puntuacion, setPuntuacion] = useState(0);
-  const [aciertosConsecutivos, setAciertosConsecutivos] = useState(0);
+  // Estados principales del juego
+  const [preguntaDia, setPreguntaDia] = useState(null); // Día a adivinar
+  const [opciones, setOpciones] = useState([]); // Opciones en inglés
+  const [haGanado, setHaGanado] = useState(false); // Estado de acierto
+  const [mensajeFeedback, setMensajeFeedback] = useState(null); // Mensaje de respuesta
+  const [puntuacion, setPuntuacion] = useState(0); // Puntuación acumulada
+  const [aciertosConsecutivos, setAciertosConsecutivos] = useState(0); // Racha de aciertos
 
-  // 🔄 Función Central: Inicia o Reinicia el Juego
+  // Función Central: Inicia o Reinicia el Juego
   const generarJuego = () => {
     setHaGanado(false);
     setMensajeFeedback(null);
@@ -34,6 +35,7 @@ function AdivinaDiaSimple() {
     setPreguntaDia(respuestaCorrecta);
   };
 
+  // Cargar puntuación desde localStorage al iniciar
   useEffect(() => {
     generarJuego();
     const puntuacionGuardada = localStorage.getItem('puntuacionGeneral');
@@ -42,7 +44,7 @@ function AdivinaDiaSimple() {
     }
   }, []);
 
-  // 📝 Función para Revisar la Respuesta del Usuario
+  // Función para revisar la respuesta del usuario
   const RevisarRespuesta = (selectedEnglishName) => {
     if (haGanado) return;
 
@@ -53,26 +55,29 @@ function AdivinaDiaSimple() {
       const nuevosAciertos = aciertosConsecutivos + 1;
       setAciertosConsecutivos(nuevosAciertos);
 
+      // Cada 5 aciertos consecutivos, sumar 1 punto
       if (nuevosAciertos % 5 === 0) {
         const nuevaPuntuacion = puntuacion + 1;
         setPuntuacion(nuevaPuntuacion);
         localStorage.setItem('puntuacionGeneral', nuevaPuntuacion);
       }
     } else {
-      setMensajeFeedback('Incorrecto. Intenta de nuevo. ');
+      setMensajeFeedback('Incorrecto. Intenta de nuevo.');
     }
   };
 
+  // Mostrar mensaje de carga si aún no hay pregunta
   if (!preguntaDia) {
     return <p>Cargando...</p>;
   }
 
   return (
     <Container className="mt-4" style={{ backgroundColor: '#e3f2fd', padding: '2rem', borderRadius: '15px' }}>
-      <Card style={{ width: '30rem', margin: 'auto', border: `2px solid #BBDEFB` }}>
+      <Card style={{ width: '30rem', margin: 'auto', border: '2px solid #BBDEFB' }}>
         <Card.Body>
+          {/* Título del juego */}
           <Card.Title className="text-center">
-            <h2>¿Cuál es el día en Inglés?</h2>
+            <h2 style={{ color: '#1A237E' }}>¿Cuál es el día en Inglés?</h2>
           </Card.Title>
 
           {/* Puntuación general */}
@@ -97,12 +102,15 @@ function AdivinaDiaSimple() {
                   disabled={haGanado}
                   style={
                     haGanado && opcion.en === preguntaDia.en
-                      ? { // Estilo para respuesta correcta (pastel green)
-                          backgroundColor: '#c8e6c9', 
-                          color: '#1A237E', 
-                          borderColor: '#a5d6a7', 
-                        } // Estilo normal
-                      : { color: '#1A237E', borderColor: '#BBDEFB' } // Default button text and border
+                      ? {
+                          backgroundColor: '#c8e6c9', // Verde pastel si es correcta
+                          color: '#1A237E',
+                          borderColor: '#a5d6a7',
+                        }
+                      : {
+                          color: '#1A237E',
+                          borderColor: '#BBDEFB',
+                        }
                   }
                 >
                   {opcion.en}
@@ -111,20 +119,33 @@ function AdivinaDiaSimple() {
             ))}
           </Row>
 
-          {/* Feedback */}
+          {/* Feedback de respuesta */}
           {mensajeFeedback && (
             <Alert
-              variant={haGanado ? 'success' : 'danger'} // Bootstrap variants will map to default success/danger colors, which are usually good.
+              variant={haGanado ? 'success' : 'danger'}
               className="mt-3 text-center"
+              style={{
+                backgroundColor: haGanado ? '#c8e6c9' : undefined,
+                color: '#1A237E',
+                borderColor: haGanado ? '#a5d6a7' : undefined
+              }}
             >
               <h3>{mensajeFeedback}</h3>
             </Alert>
           )}
 
-          {/* Botón de jugar de nuevo */}
+          {/* Botón para jugar de nuevo */}
           {haGanado && (
             <div className="d-grid gap-2 mt-3">
-              <Button size="lg" onClick={generarJuego} style={{ backgroundColor: '#90CAF9', borderColor: '#90CAF9', color: '#1A237E' }}>
+              <Button
+                size="lg"
+                onClick={generarJuego}
+                style={{
+                  backgroundColor: '#90CAF9',
+                  borderColor: '#90CAF9',
+                  color: '#1A237E'
+                }}
+              >
                 Jugar de Nuevo
               </Button>
             </div>
