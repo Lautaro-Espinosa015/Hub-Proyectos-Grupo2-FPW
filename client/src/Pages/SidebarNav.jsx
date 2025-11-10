@@ -142,40 +142,34 @@ function SidebarNav({ onLoginClick }) {
             const studentNavItem = studentNavConfig[currentUser.nivel];
             if (!studentNavItem) return null;
 
-            // Comprueba si este es el menú que está actualmente abierto.
-            const isOpen = openMenuText === studentNavItem.text;
+            // Obtener la ruta directa del primer (y único) sub-item
+            const directLink = studentNavItem.subItems[0].to;
+
             return (
               <ListItem key={studentNavItem.text} disablePadding>
                 <ListItemButton
-                  onClick={(e) => handleMenuClick(e, studentNavItem)}
-                  sx={{ py: 1, px: 2, flexDirection: 'column', minWidth: '140px', textAlign: 'center', bgcolor: 'primary.dark', color: 'primary.contrastText' }}
+                  component={NavLink} // Usar NavLink para la navegación directa
+                  to={directLink} // Enlazar directamente a la página de juegos del nivel
+                  sx={{
+                    py: 1,
+                    px: 2,
+                    flexDirection: 'column',
+                    minWidth: '140px',
+                    textAlign: 'center',
+                    bgcolor: 'primary.dark',
+                    color: 'primary.contrastText',
+                    '&.active': { // Estilo para cuando la ruta está activa
+                      bgcolor: 'action.selected',
+                      color: 'primary.main',
+                      '& .MuiListItemIcon-root': { color: 'primary.main' }
+                    }
+                  }}
                 >
                   <ListItemIcon sx={{ minWidth: 'auto', justifyContent: 'center', color: 'inherit' }}>
                     {studentNavItem.icon}
                   </ListItemIcon>
-                  {/* El texto del botón incluye una flecha para indicar que es un menú desplegable. */}
-                  <ListItemText
-                    primary={
-                      <>
-                        {studentNavItem.text}
-                        <ArrowDropDown sx={{ fontSize: 16, ml: 0.5, verticalAlign: 'middle' }} />
-                      </>
-                    }
-                    primaryTypographyProps={{ variant: 'caption', noWrap: true, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-                  />
+                  <ListItemText primary={studentNavItem.text} primaryTypographyProps={{ variant: 'caption', noWrap: true, display: 'flex', alignItems: 'center', justifyContent: 'center' }} />
                 </ListItemButton>
-                {/* Componente del menú que se muestra u oculta. */}
-                <Menu
-                  anchorEl={anchorEl}
-                  open={isOpen}
-                  onClose={handleMenuClose}
-                >
-                  {studentNavItem.subItems.map((subItem) => (
-                    <MenuItem key={subItem.text} component={NavLink} to={subItem.to} onClick={handleMenuClose} disabled={subItem.disabled}>
-                      {subItem.text}
-                    </MenuItem>
-                  ))}
-                </Menu>
               </ListItem>
             );
           })()

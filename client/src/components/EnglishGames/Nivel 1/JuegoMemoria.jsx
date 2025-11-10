@@ -69,15 +69,15 @@ function JuegoMemoria() {
   };
 
   return (
-    <div className="container text-center mt-5">
-      <h2>Juego de Memoria: busca a RED, KEY, KITTEN, PUPPY, YELLOW y TEDDY</h2>
+    <div className="container text-center mt-5 p-4" style={{ backgroundColor: '#e3f2fd', borderRadius: '15px' }}>
+      <h2 style={{ color: '#1A237E' }}>Juego de Memoria: busca a RED, KEY, KITTEN, PUPPY, YELLOW y TEDDY</h2>
 
       {/* Mostrar puntuación */}
       <div className="mb-3">
-        <strong>Puntuación general: {puntuacion}</strong>
+        <strong style={{ color: '#1A237E' }}>Puntuación general: {puntuacion}</strong> 
       </div>
 
-      <button className="btn btn-success mb-4" onClick={reiniciarJuego}>
+      <button className="btn mb-4" onClick={reiniciarJuego} style={{ backgroundColor: '#90CAF9', color: '#1A237E' }}>
         Reiniciar
       </button>
 
@@ -90,7 +90,7 @@ function JuegoMemoria() {
               key={`${carta.id}-${index}`}
               onClick={() => manejarClick(index)}
             >
-              <div className="card">
+              <div className="card" style={{ border: `2px solid #BBDEFB` }}>
                 <img
                   src={mostrar ? carta.src : reversoCart}
                   className="card-img-top"
