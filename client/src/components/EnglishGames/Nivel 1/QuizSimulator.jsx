@@ -24,8 +24,8 @@ import pictogramCar from '../../../assets/Img/ImgEnglishGames/ImgArrastraLaImage
 
 // --- Audios (reutilizando y placeholders) ---
 import audioWhatIsThis from '../../../assets/Sounds/ConversationalSimulator/hello_how_are_you.mp3'; // Placeholder for "What is this?"
-import audioCorrect from '../../../assets/Sounds/ConversationalSimulator/sounds_fun_have_great_time.mp3'; // Placeholder for "Correct!"
-import audioIncorrect from '../../../assets/Sounds/ConversationalSimulator/oh_sorry_what_plans.mp3'; // Placeholder for "Try again"
+import audioCorrect from '../../../assets/Sounds/ConversationalSimulator/correct_feedback.mp3'; // Placeholder for "Correct!"
+import audioIncorrect from '../../../assets/Sounds/ConversationalSimulator/incorrect_feedback.mp3'; // Placeholder for "Try again"
 import audioApple from '../../../assets/Sounds/SoundsArrastraLaImagen/apple.mp3';
 import audioDog from '../../../assets/Sounds/SoundsArrastraLaImagen/dog.mp3';
 import audioCar from '../../../assets/Sounds/SoundsArrastraLaImagen/car.mp3';
