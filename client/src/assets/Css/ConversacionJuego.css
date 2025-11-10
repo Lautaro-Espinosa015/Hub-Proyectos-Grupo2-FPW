@@ -1,0 +1,51 @@
+/* Grid y tarjeta */
+.lcg-card { box-sizing: border-box; max-width:720px; margin:0 auto; padding:16px; }
+.lcg-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap:16px; justify-items:center; align-items:start; }
+
+/* Botón respuesta */
+.lcg-answer {
+  width:100%;
+  max-width:320px;
+  min-height:120px;
+  padding:10px;
+  box-sizing:border-box;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:flex-start;
+  gap:8px;
+  overflow:visible;
+  border-radius:10px;
+}
+
+/* Imagen mediana y no recortada */
+.lcg-answer-img {
+  width:64px;            /* tamaño fijo mediano */
+  height:64px;           /* mantiene proporción cuadrada */
+  max-width:80%;
+  max-height:80px;
+  object-fit:contain;    /* evita recortes y mantiene aspecto */
+  display:block;
+  margin:0 auto;
+  background:#fff;
+  padding:6px;
+  border-radius:8px;
+  box-shadow:0 3px 8px rgba(2,6,23,0.06);
+}
+
+/* Seguridad contra reglas globales que recorten */
+.lcg-answer img { max-width:100%; height:auto; object-fit:contain; }
+
+/* Texto centrado */
+.lcg-answer-text { text-align:center; font-weight:800; font-size:16px; line-height:1.1; }
+
+/* Responsive: en móviles apilar */
+@media (max-width:480px) {
+  .lcg-grid { grid-template-columns: 1fr; gap:12px; }
+  .lcg-answer { min-height:110px; padding:8px; }
+  .lcg-answer-img { width:72px; height:72px; max-height:88px; }
+}
+
+/* Forzar si otro CSS sobrescribe */
+.lcg-card .lcg-grid { display:grid !important; grid-template-columns: repeat(2, 1fr) !important; }
+.lcg-answer-img { width:64px !important; height:64px !important; object-fit:contain !important; }
