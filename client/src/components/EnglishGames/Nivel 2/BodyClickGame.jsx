@@ -52,49 +52,65 @@ export default function BodyDragGame() {
   };
 
   return (
-    <div className="game-container">
-      <h1 className="text-3xl font-bold mb-2">Body Drag Game</h1>
-      <p className="text-xl mb-4">Arrastra cada parte del cuerpo a su posición correcta</p>
+    <div className="game-container" style={{ backgroundColor: "#e3f2fd", minHeight: "100vh" }}> {/* cambio cromático unificado */}
+      <h1 className="text-3xl font-bold mb-2" style={{ color: "#1A237E" }}>Body Drag Game</h1> {/* cambio cromático unificado */}
+      <p className="text-xl mb-4" style={{ color: "#1A237E" }}>
+        Arrastra cada parte del cuerpo a su posición correcta
+      </p> {/* cambio cromático unificado */}
 
       {/* Silueta con casilleros */}
-      <div className="relative w-[350px] h-[500px] bg-white rounded-2xl shadow-xl overflow-hidden mb-6">
+      <div
+        className="relative w-[350px] h-[500px] rounded-2xl shadow-xl overflow-hidden mb-6"
+        style={{ backgroundColor: "#F5F5F5" }} // cambio cromático unificado
+      >
         {bodyParts.map((part) => (
-          
-<div
-  key={part.id}
-  onDrop={(e) => soltarParte(e, part.id)}
-  onDragOver={permitirSoltar}
-  className={`casillero ${placedParts[part.id] ? "correcto" : ""}`}
-  style={{
-    left: part.x,
-    top: part.y,
-    width: part.width,
-    height: part.height,
-    position: "absolute",
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "center"
-  }}
->
-  {placedParts[part.id] && (
-    <img
-      src={images[part.id]}
-      alt={part.id}
-      style={{ maxWidth: "100%", maxHeight: "100%" }}
-      draggable={false}
-    />
-  )}
-  {/* Etiqueta en inglés */}
-  <p style={{ marginTop: "4px", fontSize: "14px", fontWeight: "bold", color: "#fff" }}>
-    {part.id.toUpperCase()}
-  </p>
-</div>
+          <div
+            key={part.id}
+            onDrop={(e) => soltarParte(e, part.id)}
+            onDragOver={permitirSoltar}
+            className="casillero"
+            style={{
+              left: part.x,
+              top: part.y,
+              width: part.width,
+              height: part.height,
+              position: "absolute",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+              backgroundColor: placedParts[part.id] ? "#c8e6c9" : "#BBDEFB", // cambio cromático unificado
+              border: `2px solid ${placedParts[part.id] ? "#a5d6a7" : "#BBDEFB"}`, // cambio cromático unificado
+              borderRadius: "12px"
+            }}
+          >
+            {placedParts[part.id] && (
+              <img
+                src={images[part.id]}
+                alt={part.id}
+                style={{ maxWidth: "100%", maxHeight: "100%" }}
+                draggable={false}
+              />
+            )}
+            <p style={{ marginTop: "4px", fontSize: "14px", fontWeight: "bold", color: "#1A237E" }}> {/* cambio cromático unificado */}
+              {part.id.toUpperCase()}
+            </p>
+          </div>
         ))}
       </div>
 
       {/* Bandeja horizontal */}
-      <div className="bandeja">
+      <div
+        className="bandeja"
+        style={{
+          display: "flex",
+          flexDirection: "row", // disposición horizontal bandeja
+          flexWrap: "wrap",
+          justifyContent: "center",
+          gap: "12px",
+          padding: "12px"
+        }}
+      >
         {bodyParts.map((part) =>
           !placedParts[part.id] ? (
             <div
@@ -102,15 +118,27 @@ export default function BodyDragGame() {
               className="pieza"
               draggable
               onDragStart={(e) => iniciarArrastre(e, part.id)}
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                backgroundColor: "#BBDEFB", // cambio cromático unificado
+                border: "2px solid #BBDEFB", // cambio cromático unificado
+                borderRadius: "8px",
+                padding: "8px",
+                width: "80px"
+              }}
             >
-              <img src={images[part.id]} alt={part.id} />
-              <p>{part.etiquetaEs}</p>
+              <img src={images[part.id]} alt={part.id} style={{ maxWidth: "100%" }} />
+              <p style={{ fontSize: "14px", fontWeight: "bold", color: "#1A237E", marginTop: "4px" }}> {/* cambio cromático unificado */}
+                {part.etiquetaEs}
+              </p>
             </div>
           ) : null
         )}
       </div>
 
-      <p className="text-lg mt-4">Puntos: {score}</p>
+      <p className="text-lg mt-4" style={{ color: "#424242" }}>Puntos: {score}</p> {/* cambio cromático unificado */}
     </div>
   );
 }

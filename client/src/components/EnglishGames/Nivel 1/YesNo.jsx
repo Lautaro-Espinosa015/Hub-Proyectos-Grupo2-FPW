@@ -31,6 +31,7 @@ export default function YesNoGame() {
   const [feedback, setFeedback] = useState("");
   const [feedbackType, setFeedbackType] = useState("success");
   const [isAnswering, setIsAnswering] = useState(false);
+  const [score, setScore] = useState(0); // contador de puntos agregado
 
   const audioRef = useRef(new Audio());
 
@@ -53,6 +54,7 @@ export default function YesNoGame() {
     if (isCorrect) {
       setFeedbackType("success");
       setFeedback("¡Muy bien! / Great job!");
+      setScore((prev) => prev + 1); // incremento de puntos
       playSound(audioCorrect, () => {
         setFeedback("");
         setStep((prev) => (prev + 1) % questions.length);
@@ -174,6 +176,25 @@ export default function YesNoGame() {
             )}
           </CardContent>
         </Card>
+
+        {/* Contador de puntos modular */}
+        <Box
+          sx={{
+            mt: 4,
+            p: 2,
+            backgroundColor: "#F5F5F5", // fondo neutro
+            border: "2px solid #BBDEFB", // borde de tarjeta
+            borderRadius: "12px",
+            textAlign: "center",
+            color: "#424242", // texto puntuación
+            fontSize: "18px",
+            fontWeight: "bold",
+            width: "fit-content",
+            mx: "auto"
+          }}
+        >
+          Puntos acumulados: {score}
+        </Box>
       </Container>
     </Box>
   );
