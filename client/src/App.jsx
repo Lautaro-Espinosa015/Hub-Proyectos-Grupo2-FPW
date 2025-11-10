@@ -25,6 +25,14 @@ import AdvancedQuizSimulator from './components/EnglishGames/Nivel 3/AdvancedQui
 import ConversationalSimulator from './components/EnglishGames/Nivel 3/ConversationalSimulator.jsx';
 
 
+
+import BrianEstradaProfile from './components/Grupo02-Profiles/BrianEstradaProfile.jsx';
+import MauroMoralesProfile from './components/Grupo02-Profiles/MauroMoralesProfile.jsx';
+import WalterCussiProfile from './components/Grupo02-Profiles/WalterCussiProfile.jsx';
+import LautaroEspinosaProfile from './components/Grupo02-Profiles/LautaroEspinosaProfile.jsx';
+import MelaniSilvaProfile from './components/Grupo02-Profiles/MelaniSilvaProfile.jsx';
+
+
 function App() {
   return (
     <Routes>
@@ -49,6 +57,13 @@ function App() {
         <Route path='QuizSimulator' element={<QuizSimulator />} />
         <Route path='AdvancedQuizSimulator' element={<AdvancedQuizSimulator />} />
         <Route path='ConversationalSimulator' element={<ConversationalSimulator />} />
+
+
+        <Route path='BrianEstradaProfile' element={<BrianEstradaProfile />} />
+     <Route path='MauroMoralesProfile' element={<MauroMoralesProfile />} />
+     <Route path='WalterCussiProfile' element={<WalterCussiProfile />} />
+     <Route path='LautaroEspinosaProfile' element={<LautaroEspinosaProfile />} />
+     <Route path='MelaniSilvaProfile' element={<MelaniSilvaProfile />} />
 
 
      <Route path='JuegoVerbosD' element={<JuegoVerbosD />} />
