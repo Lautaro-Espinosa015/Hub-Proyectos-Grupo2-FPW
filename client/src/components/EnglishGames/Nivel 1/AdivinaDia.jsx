@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Card, Button, Alert, Row, Col, Container } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 
 // Lista Maestra de Días
 const masterList = [
@@ -148,6 +149,21 @@ function AdivinaDiaSimple() {
               >
                 Jugar de Nuevo
               </Button>
+              {puntuacion >= 1 && (
+                <Link to="/juegomemoria">
+                  <Button
+                    size="lg"
+                    style={{
+                      backgroundColor: '#4CAF50',
+                      borderColor: '#4CAF50',
+                      color: 'white',
+                      width: '100%'
+                    }}
+                  >
+                    Siguiente Juego
+                  </Button>
+                </Link>
+              )}
             </div>
           )}
         </Card.Body>
