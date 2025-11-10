@@ -21,6 +21,7 @@ const esquemaUsuario = new mongoose.Schema({
   rol: {
     type: String,
     required: true,
+    enum: ['admin', 'student', 'normal'],
     default: 'normal' // Si no se especifica, será 'normal'
   },
   nivel: {

@@ -37,7 +37,7 @@ function Layout() {
     <ThemeProvider theme={darkTheme}>
       <CssBaseline /> {/* Normaliza estilos y aplica fondo oscuro al body */}
       <div className="main-content">
-        <SidebarNav onLoginClick={handleDrawerOpen} isLoggedIn={isLoggedIn} currentUser={currentUser} />
+        <SidebarNav onLoginClick={handleDrawerOpen} />
         <main className="page-content"><Outlet /></main>
       </div>
       <Drawer anchor="right" open={drawerOpen} onClose={handleDrawerClose}>

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
-import { Box, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Menu, MenuItem } from '@mui/material';
+import { Box, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Menu, MenuItem, Typography } from '@mui/material';
 import { Home, Folder, Code, CodeSharp, Pets, People, SportsEsports, ArrowDropDown, Add, Login, Logout, Explore, Build, RecordVoiceOver } from '@mui/icons-material';
 
 import { useAutorizacion } from '../Contexts/AutorizacionContext';
@@ -69,9 +69,29 @@ const studentNavConfig = {
   },
 };
 
-function SidebarNav({ onLoginClick, isLoggedIn, currentUser }) {
+// Menú especial para administradores que agrupa todos los niveles de inglés
+const adminEnglishMenu = {
+  text: 'English Levels',
+  icon: <Explore />,
+  subItems: [
+    { text: 'Nivel 1 - Explorador', icon: <Explore />, to: '/student-zone/1' },
+    { text: 'Nivel 2 - Constructor', icon: <Build />, to: '/student-zone/2' },
+    { text: 'Nivel 3 - Conversador', icon: <RecordVoiceOver />, to: '/student-zone/3' },
+  ],
+};
+
+function SidebarNav({ onLoginClick }) {
+  const { isLoggedIn, currentUser, isAdmin } = useAutorizacion();
   const [anchorEl, setAnchorEl] = useState(null);
   const [openMenuText, setOpenMenuText] = useState('');
+  
+  // Debugging logs
+  console.log('Estado de autenticación:', {
+    isLoggedIn,
+    currentUser,
+    isAdmin: isAdmin(),
+    rol: currentUser?.rol
+  });
 
   const handleMenuClick = (event, item) => {
     setAnchorEl(event.currentTarget);
@@ -141,9 +161,96 @@ function SidebarNav({ onLoginClick, isLoggedIn, currentUser }) {
           })()
         )}
 
-        {/* Separador visual si el menú de estudiante está presente */}
+        {/* Separador visual si el menú de estudiante está presente y menú adicional para admin */}
         {isLoggedIn && currentUser?.rol === 'student' && currentUser?.nivel > 0 && (
           <Box sx={{ borderLeft: '1px solid', borderColor: 'divider', mx: 1 }} />
+        )}
+
+        {/* Menú exclusivo para administradores que agrupa los 3 niveles de inglés */}
+        {console.log('Evaluando condición admin:', { isLoggedIn, isAdmin: isAdmin() })}
+        {isLoggedIn && isAdmin() && (
+          <>
+            <ListItem disablePadding>
+              <ListItemButton
+                onClick={(e) => handleMenuClick(e, adminEnglishMenu)}
+                sx={{
+                  py: 1,
+                  px: 2,
+                  flexDirection: 'column',
+                  minWidth: '160px',
+                  textAlign: 'center',
+                  bgcolor: 'primary.main',
+                  color: 'white',
+                  '&:hover': { 
+                    bgcolor: 'primary.dark',
+                    transform: 'scale(1.02)',
+                    transition: 'all 0.2s'
+                  }
+                }}
+              >
+                <ListItemIcon sx={{ minWidth: 'auto', justifyContent: 'center', color: 'inherit' }}>
+                  {adminEnglishMenu.icon}
+                </ListItemIcon>
+                <ListItemText
+                  primary={
+                    <>
+                      {adminEnglishMenu.text}
+                      <ArrowDropDown sx={{ fontSize: 16, ml: 0.5, verticalAlign: 'middle' }} />
+                    </>
+                  }
+                  primaryTypographyProps={{ 
+                    variant: 'button', 
+                    noWrap: true, 
+                    display: 'flex', 
+                    alignItems: 'center', 
+                    justifyContent: 'center',
+                    fontWeight: 'bold'
+                  }}
+                />
+              </ListItemButton>
+              <Menu
+                anchorEl={anchorEl}
+                open={openMenuText === adminEnglishMenu.text}
+                onClose={handleMenuClose}
+                PaperProps={{
+                  sx: {
+                    mt: 1,
+                    width: '250px'
+                  }
+                }}
+              >
+                {adminEnglishMenu.subItems.map((subItem) => (
+                  <MenuItem 
+                    key={subItem.text} 
+                    component={NavLink} 
+                    to={subItem.to} 
+                    onClick={handleMenuClose}
+                    sx={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      alignItems: 'flex-start',
+                      py: 1
+                    }}
+                  >
+                    <Box sx={{ display: 'flex', alignItems: 'center', width: '100%' }}>
+                      <ListItemIcon sx={{ minWidth: 'auto', mr: 1, color: 'primary.main' }}>
+                        {subItem.icon}
+                      </ListItemIcon>
+                      <Typography variant="subtitle2" sx={{ fontWeight: 'bold' }}>
+                        {subItem.text}
+                      </Typography>
+                    </Box>
+                    {subItem.description && (
+                      <Typography variant="caption" color="text.secondary" sx={{ pl: 4 }}>
+                        {subItem.description}
+                      </Typography>
+                    )}
+                  </MenuItem>
+                ))}
+              </Menu>
+            </ListItem>
+            <Box sx={{ borderLeft: '1px solid', borderColor: 'divider', mx: 1 }} />
+          </>
         )}
 
         {/* 2. Bucle de renderizado único y corregido */}
