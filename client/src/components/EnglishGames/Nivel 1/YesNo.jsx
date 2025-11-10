@@ -16,40 +16,20 @@ import carImg from "../../../assets/Img/ImgEnglishGames/YesNo/car.png";
 import ballImg from "../../../assets/Img/ImgEnglishGames/YesNo/ball.png";
 
 // --- Audios ---
-import audioCorrect from "../../../assets/Sounds/ConversationalSimulator/correct_feedback.mp3"; // Placeholder for "Correct!"
-import audioIncorrect from "../../../assets/Sounds/ConversationalSimulator/incorrect_feedback.mp3"; // Placeholder for "Try again"
+import audioCorrect from "../../../assets/Sounds/ConversationalSimulator/correct_feedback.mp3";
+import audioIncorrect from "../../../assets/Sounds/ConversationalSimulator/incorrect_feedback.mp3";
 
 export default function YesNoGame() {
   const questions = [
-    {
-      img: dogImg,
-      english: "Is this a dog?",
-      spanish: "¿Esto es un perro?",
-      correct: true,
-    },
-    {
-      img: catImg,
-      english: "Is this a dog?",
-      spanish: "¿Esto es un perro?",
-      correct: false,
-    },
-    {
-      img: carImg,
-      english: "Is this a car?",
-      spanish: "¿Esto es un auto?",
-      correct: true,
-    },
-    {
-      img: ballImg,
-      english: "Is this a cat?",
-      spanish: "¿Esto es un gato?",
-      correct: false,
-    },
+    { img: dogImg, english: "Is this a dog?", spanish: "¿Esto es un perro?", correct: true },
+    { img: catImg, english: "Is this a dog?", spanish: "¿Esto es un perro?", correct: false },
+    { img: carImg, english: "Is this a car?", spanish: "¿Esto es un auto?", correct: true },
+    { img: ballImg, english: "Is this a cat?", spanish: "¿Esto es un gato?", correct: false },
   ];
 
   const [step, setStep] = useState(0);
   const [feedback, setFeedback] = useState("");
-  const [feedbackType, setFeedbackType] = useState("success"); // "success" | "error"
+  const [feedbackType, setFeedbackType] = useState("success");
   const [isAnswering, setIsAnswering] = useState(false);
 
   const audioRef = useRef(new Audio());
@@ -91,7 +71,7 @@ export default function YesNoGame() {
     <Box
       sx={{
         minHeight: "100vh",
-        bgcolor: '#e3f2fd', // Very light pastel blue background
+        bgcolor: '#e3f2fd', // Fondo general: azul muy claro
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
@@ -104,6 +84,7 @@ export default function YesNoGame() {
           component="h1"
           align="center"
           fontWeight="bold"
+          color="#1A237E" // Texto principal: azul oscuro profundo
           gutterBottom
         >
           Yes / No Game
@@ -112,10 +93,10 @@ export default function YesNoGame() {
         <Card
           sx={{
             border: "4px solid",
-            borderColor: '#BBDEFB', // Light blue border
+            borderColor: '#BBDEFB', // Borde de tarjeta: azul claro
             borderRadius: 4,
             boxShadow: 6,
-            bgcolor: 'white', // Card background remains white for contrast
+            bgcolor: 'white',
             p: 2,
           }}
         >
@@ -126,47 +107,42 @@ export default function YesNoGame() {
             sx={{
               height: 260,
               objectFit: "contain",
-              bgcolor: '#F5F5F5', // Lighter background for image
+              bgcolor: '#F5F5F5', // Fondo neutro: gris claro
               border: "4px solid",
-              borderColor: '#BBDEFB', // Light blue border
-              borderRadius: 2, 
+              borderColor: '#BBDEFB', // Borde de imagen: azul claro
+              borderRadius: 2,
               mx: "auto",
               maxWidth: 320,
             }}
           />
 
           <CardContent sx={{ textAlign: "center" }}>
-            <Typography variant="h5" fontWeight="600" gutterBottom>
-              {current.english} 
+            <Typography variant="h5" fontWeight="600" gutterBottom color="#1A237E">
+              {current.english}
             </Typography>
             <Typography
               variant="subtitle1"
-              color="#424242" // Secondary text color
+              color="#424242" // Texto puntuación: gris oscuro
               gutterBottom
             >
-              {current.spanish} 
+              {current.spanish}
             </Typography>
 
-            <Stack
-              direction="row"
-              spacing={3}
-              justifyContent="center"
-              sx={{ mt: 2 }}
-            >
+            <Stack direction="row" spacing={3} justifyContent="center" sx={{ mt: 2 }}>
               <Button
                 onClick={() => handleAnswer(true)}
                 variant="contained"
                 disabled={isAnswering}
                 sx={{
                   border: "4px solid",
-                  borderColor: '#c8e6c9', // Pastel green border
+                  borderColor: '#c8e6c9', // Borde correcto: verde pastel
                   borderRadius: 3,
                   px: 4,
                   py: 1.5,
                   fontWeight: "bold",
-                  bgcolor: '#c8e6c9', // Pastel green
-                  color: '#1A237E', // Dark indigo text
-                  '&:hover': { bgcolor: '#a5d6a7' } // Slightly darker green on hover
+                  bgcolor: '#c8e6c9', // Fondo correcto: verde pastel
+                  color: '#1A237E', // Texto principal
+                  '&:hover': { bgcolor: '#a5d6a7' }, // Hover: verde claro
                 }}
               >
                 YES
@@ -177,14 +153,14 @@ export default function YesNoGame() {
                 disabled={isAnswering}
                 sx={{
                   border: "4px solid",
-                  borderColor: '#ffc0cb', // Pastel pink border
+                  borderColor: '#BBDEFB', // Reutilizamos azul claro para NO
                   borderRadius: 3,
                   px: 4,
                   py: 1.5,
                   fontWeight: "bold",
-                  bgcolor: '#ffc0cb', // Pastel pink
-                  color: '#1A237E', // Dark indigo text
-                  '&:hover': { bgcolor: '#f48bb1' } // Slightly darker pink on hover
+                  bgcolor: '#90CAF9', // Botón activo: azul medio
+                  color: '#1A237E',
+                  '&:hover': { bgcolor: '#BBDEFB' }, // Hover: azul claro
                 }}
               >
                 NO
@@ -192,10 +168,7 @@ export default function YesNoGame() {
             </Stack>
 
             {feedback && (
-              <Alert
-                severity={feedbackType}
-                sx={{ mt: 3, fontWeight: "bold" }}
-              >
+              <Alert severity={feedbackType} sx={{ mt: 3, fontWeight: "bold" }}>
                 {feedback}
               </Alert>
             )}
