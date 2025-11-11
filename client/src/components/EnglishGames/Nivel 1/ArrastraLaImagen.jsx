@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
+import { Link } from 'react-router-dom'; // Necesitas importar Link
 import imgManzana from '../../../assets/Img/ImgEnglishGames/ImgArrastraLaImagen/manzana.png';
 import imgPerro from '../../../assets/Img/ImgEnglishGames/ImgArrastraLaImagen/perro.png';
 import imgAuto from '../../../assets/Img/ImgEnglishGames/ImgArrastraLaImagen/auto.png';
@@ -86,6 +87,12 @@ export default function ArrastraLaImagen() {
     }
   };
 
+  // NUEVA LÓGICA: Determinar si la ronda ha terminado
+  const rondaCompletada = 
+    Object.keys(objetosColocados).length === objetosActivos.length && 
+    objetosActivos.length > 0;
+
+
   return (
     <Box sx={{ maxWidth: 960, mx: 'auto', py: 4, bgcolor: '#e3f2fd', borderRadius: 2, p: 3 }}>
       <Typography variant="h4" align="center" gutterBottom fontWeight="bold" color="#1A237E">
@@ -97,9 +104,16 @@ export default function ArrastraLaImagen() {
         Puntuación general: {puntuacion}
       </Typography>
 
-      <Button variant="contained" onClick={seleccionarObjetosAleatorios} sx={{ mb: 3, bgcolor: '#90CAF9', color: '#1A237E', '&:hover': { bgcolor: '#64B5F6' } }}>
-        Nueva ronda
-      </Button>
+      {/* El botón de 'Nueva ronda' se oculta si la ronda ya está completada */}
+      {!rondaCompletada && (
+        <Button 
+          variant="contained" 
+          onClick={seleccionarObjetosAleatorios} 
+          sx={{ mb: 3, bgcolor: '#90CAF9', color: '#1A237E', '&:hover': { bgcolor: '#64B5F6' } }}
+        >
+          Nueva ronda
+        </Button>
+      )}
 
       <Grid container spacing={4}>
         {/* Objetos arrastrables */}
@@ -111,10 +125,16 @@ export default function ArrastraLaImagen() {
             {objetosActivos.map((objeto) => (
               <Card
                 key={objeto.id}
-                draggable
+                draggable={!objetosColocados[objeto.id] && !rondaCompletada} // Se puede arrastrar si no está colocado y la ronda no ha terminado
                 onDragStart={(e) => iniciarArrastre(e, objeto.id)}
                 onClick={() => reproducirAudio(objeto.audio)} // eslint-disable-line
-                sx={{ width: 120, cursor: 'grab', textAlign: 'center', boxShadow: 2, bgcolor: 'white' }}
+                sx={{ 
+                  width: 120, 
+                  cursor: (objetosColocados[objeto.id] || rondaCompletada) ? 'default' : 'grab', // Cambio de cursor
+                  textAlign: 'center', 
+                  boxShadow: 2, 
+                  bgcolor: 'white' 
+                }}
               >
                 <CardContent>
                   <img
@@ -150,7 +170,7 @@ export default function ArrastraLaImagen() {
                   justifyContent: 'center',
                   fontWeight: 'bold',
                   bgcolor: objetosColocados[objeto.id] ? '#c8e6c9' : '#fafafa',
-                  color: objetosColocados[objeto.id] ? '#4A4A4A' : '#4A4A4A',
+                  color: objetosColocados[objeto.id] ? '#1A237E' : '#4A4A4A',
                 }}
               >
                 {objeto.etiqueta}
@@ -159,6 +179,48 @@ export default function ArrastraLaImagen() {
           </Box>
         </Grid>
       </Grid>
+      
+      {/* LÓGICA DE PASE DE NIVEL - MUESTRA DESPUÉS DE COMPLETAR LA RONDA */}
+      {rondaCompletada && (
+          <Box sx={{ mt: 4, display: 'flex', flexDirection: 'column', gap: 2, alignItems: 'center' }}>
+              <Typography variant="h5" align="center" color="#1A237E" fontWeight="bold">
+                  ¡Ronda Completada! 🎉
+              </Typography>
+
+              {puntuacion >= 1 ? (
+                  // Opción 1: Desbloqueado el siguiente nivel
+                  <Link to="/AdivinaDia" style={{ textDecoration: 'none', width: '100%', maxWidth: '300px' }}>
+                      <Button
+                          variant="contained"
+                          size="large"
+                          fullWidth
+                          sx={{
+                              bgcolor: '#4CAF50', // Verde para Siguiente Nivel
+                              color: 'white',
+                              '&:hover': { bgcolor: '#388E3C' }
+                          }}
+                      >
+                          Siguiente Nivel 
+                      </Button>
+                  </Link>
+              ) : (
+                  // Opción 2: Necesita más puntos
+                  <Typography variant="body1" color="textSecondary" align="center">
+                      ¡Sigue jugando! Necesitas alcanzar una puntuación de 1 para desbloquear el siguiente nivel.
+                  </Typography>
+              )}
+              
+              {/* Botón para jugar la siguiente ronda (si la puntuación aún no permite pasar o para seguir acumulando puntos) */}
+              <Button 
+                  variant="contained" 
+                  onClick={seleccionarObjetosAleatorios} 
+                  size="large"
+                  sx={{ width: '100%', maxWidth: '300px', bgcolor: '#90CAF9', color: '#1A237E', '&:hover': { bgcolor: '#64B5F6' } }}
+              >
+                  Jugar otra ronda
+              </Button>
+          </Box>
+      )}
 
       {/* Audio oculto */}
       <audio ref={referenciaAudio} />
