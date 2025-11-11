@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { questions as originalQuestions } from "../../common/questions.js";
 import QuestionsCard from "./QuestionCard.jsx";
+import { useAutorizacion } from "../../../Contexts/AutorizacionContext";
 
 export default function JuegoVerbosD() {
   const shuffleArray = (array) => [...array].sort(() => Math.random() - 0.5);
+  const { currentUser, updateScore, isLoggedIn } = useAutorizacion();
 
   const [questions, setQuestions] = useState(shuffleArray(originalQuestions));
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -22,9 +24,10 @@ export default function JuegoVerbosD() {
     return () => clearInterval(timer);
   }, [timeLeft]);
 
-  const handleAnswer = (selectedOption) => {
+  const handleAnswer = async (selectedOption) => {
     if (selectedOption === questions[currentIndex].correctAnswer) {
       setScore(score + 1);
+      await updateScore(20); // Otorgar 20 puntos por respuesta correcta
     }
     nextQuestion();
   };
@@ -45,6 +48,11 @@ export default function JuegoVerbosD() {
 
   return (
     <div className="container mt-5">
+      {isLoggedIn && (
+        <h4 className="text-center mb-3" style={{ color: "#424242" }}>
+          Puntaje Total: {currentUser?.puntaje || 0}
+        </h4>
+      )}
       {currentIndex < questions.length ? (
         <>
           <div className="progress mb-3">
@@ -63,7 +71,7 @@ export default function JuegoVerbosD() {
         </>
       ) : (
         <div className="text-center">
-          <h2>Your score: {score}/{questions.length}</h2>
+          <h2>Tu puntaje en esta partida: {score}/{questions.length}</h2>
           <button className="btn btn-success mt-3" onClick={resetGame}>
             Restart Game
           </button>
@@ -72,5 +80,3 @@ export default function JuegoVerbosD() {
     </div>
   );
 }
-
-

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Card, Button, Alert, Row, Col, Container } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import { useAutorizacion } from '../../../Contexts/AutorizacionContext';
 
 // Lista Maestra de Días
 const masterList = [
@@ -14,12 +15,12 @@ const masterList = [
 ];
 
 function AdivinaDiaSimple() {
+  const { currentUser, updateScore, isLoggedIn } = useAutorizacion();
   // Estados principales del juego
   const [preguntaDia, setPreguntaDia] = useState(null); // Día a adivinar
   const [opciones, setOpciones] = useState([]); // Opciones en inglés
   const [haGanado, setHaGanado] = useState(false); // Estado de acierto
   const [mensajeFeedback, setMensajeFeedback] = useState(null); // Mensaje de respuesta
-  const [puntuacion, setPuntuacion] = useState(0); // Puntuación acumulada
   const [aciertosConsecutivos, setAciertosConsecutivos] = useState(0); // Racha de aciertos
 
   // Función Central: Inicia o Reinicia el Juego
@@ -36,17 +37,12 @@ function AdivinaDiaSimple() {
     setPreguntaDia(respuestaCorrecta);
   };
 
-  // Cargar puntuación desde localStorage al iniciar
   useEffect(() => {
     generarJuego();
-    const puntuacionGuardada = localStorage.getItem('puntuacionGeneral');
-    if (puntuacionGuardada) {
-      setPuntuacion(parseInt(puntuacionGuardada));
-    }
   }, []);
 
   // Función para revisar la respuesta del usuario
-  const RevisarRespuesta = (selectedEnglishName) => {
+  const RevisarRespuesta = async (selectedEnglishName) => {
     if (haGanado) return;
 
     if (selectedEnglishName === preguntaDia.en) {
@@ -56,11 +52,10 @@ function AdivinaDiaSimple() {
       const nuevosAciertos = aciertosConsecutivos + 1;
       setAciertosConsecutivos(nuevosAciertos);
 
-      // Cada 5 aciertos consecutivos, sumar 1 punto
+      // Cada 5 aciertos consecutivos, sumar 10 puntos
       if (nuevosAciertos % 5 === 0) {
-        const nuevaPuntuacion = puntuacion + 1;
-        setPuntuacion(nuevaPuntuacion);
-        localStorage.setItem('puntuacionGeneral', nuevaPuntuacion);
+        const puntosGanados = 10;
+        await updateScore(puntosGanados); // Usamos la función del contexto
       }
     } else {
       setMensajeFeedback('Incorrecto. Intenta de nuevo.');
@@ -82,9 +77,11 @@ function AdivinaDiaSimple() {
           </Card.Title>
 
           {/* Puntuación general */}
-          <Card.Text className="text-center text-muted">
-            <span style={{ color: '#424242' }}>Puntuación general: {puntuacion}</span>
-          </Card.Text>
+          {isLoggedIn && (
+            <Card.Text className="text-center text-muted">
+              <span style={{ color: '#424242' }}>Puntuación general: {currentUser?.puntaje || 0}</span>
+            </Card.Text>
+          )}
 
           {/* Día en español */}
           <div className="p-4 rounded text-center my-3" style={{ backgroundColor: '#F5F5F5' }}>
@@ -149,7 +146,7 @@ function AdivinaDiaSimple() {
               >
                 Jugar de Nuevo
               </Button>
-              {puntuacion >= 1 && (
+              {currentUser?.puntaje >= 10 && (
                 <Link to="/juegomemoria">
                   <Button
                     size="lg"

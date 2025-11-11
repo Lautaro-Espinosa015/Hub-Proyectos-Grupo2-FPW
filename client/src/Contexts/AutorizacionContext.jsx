@@ -63,6 +63,30 @@ export function AutorizacionProvider({ children }) {
     localStorage.removeItem(LS_KEY);
   }, []);
 
+  //  Actualizar puntaje del usuario
+  const updateScore = useCallback(async (points) => {
+    // Solo proceder si hay un usuario logueado
+    if (!currentUser || !currentUser._id) {
+      console.error("No hay usuario logueado para actualizar puntaje.");
+      return { success: false, message: "Usuario no autenticado." };
+    }
+    try {
+      // Llamada al nuevo endpoint del backend
+      const res = await axios.put(`${BASE_URL}/update-score`, {
+        userId: currentUser._id,
+        points: points, // Puntos a sumar
+      });
+      if (res.data.success) {
+        // Actualizar el estado del usuario con los datos que devuelve el backend
+        setCurrentUser(res.data.user);
+      }
+      return res.data;
+    } catch (err) {
+      console.error("Error al actualizar puntaje:", err);
+      return { success: false, message: "Error interno al actualizar puntaje." };
+    }
+  }, [currentUser]); // Depende de currentUser para obtener el ID
+
   useEffect(() => {
     if (currentUser) {
       localStorage.setItem(LS_KEY, JSON.stringify(currentUser));
@@ -89,9 +113,10 @@ export function AutorizacionProvider({ children }) {
     login,
     logout,
     register,
+    updateScore, // Exponemos la nueva función
     hasRole,
     isAdmin,
-  }), [currentUser, isLoggedIn, login, logout, register, hasRole, isAdmin]);
+  }), [currentUser, isLoggedIn, login, logout, register, updateScore, hasRole, isAdmin]);
 
   return (
     <AutorizacionContext.Provider value={contextValue}>

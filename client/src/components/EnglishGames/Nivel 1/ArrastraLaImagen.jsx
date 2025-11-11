@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom'; // Necesitas importar Link
+import { useAutorizacion } from '../../../Contexts/AutorizacionContext';
 import imgManzana from '../../../assets/Img/ImgEnglishGames/ImgArrastraLaImagen/manzana.png';
 import imgPerro from '../../../assets/Img/ImgEnglishGames/ImgArrastraLaImagen/perro.png';
 import imgAuto from '../../../assets/Img/ImgEnglishGames/ImgArrastraLaImagen/auto.png';
@@ -35,18 +36,14 @@ const objetos = [
 ];
 
 export default function ArrastraLaImagen() {
+  const { currentUser, updateScore, isLoggedIn } = useAutorizacion();
   const [objetosColocados, setObjetosColocados] = useState({});
   const [objetosActivos, setObjetosActivos] = useState([]);
-  const [puntuacion, setPuntuacion] = useState(0);
   const [aciertosTotales, setAciertosTotales] = useState(0);
   const referenciaAudio = useRef(null);
 
   useEffect(() => {
     seleccionarObjetosAleatorios();
-    const puntuacionGuardada = localStorage.getItem('puntuacionEmparejamiento');
-    if (puntuacionGuardada) {
-      setPuntuacion(parseInt(puntuacionGuardada));
-    }
   }, []);
 
   const seleccionarObjetosAleatorios = () => {
@@ -59,7 +56,7 @@ export default function ArrastraLaImagen() {
     evento.dataTransfer.setData('text/plain', idObjeto);
   };
 
-  const soltarObjeto = (evento, idCasillero) => {
+  const soltarObjeto = async (evento, idCasillero) => {
     evento.preventDefault();
     const idArrastrado = evento.dataTransfer.getData('text/plain');
     if (idArrastrado === idCasillero && !objetosColocados[idCasillero]) {
@@ -68,10 +65,9 @@ export default function ArrastraLaImagen() {
       const nuevosAciertos = aciertosTotales + 1;
       setAciertosTotales(nuevosAciertos);
 
-      if (nuevosAciertos % 5 === 0) {
-        const nuevaPuntuacion = puntuacion + 1;
-        setPuntuacion(nuevaPuntuacion);
-        localStorage.setItem('puntuacionEmparejamiento', nuevaPuntuacion);
+      // Cada 5 aciertos, sumar 5 puntos
+      if (nuevosAciertos > 0 && nuevosAciertos % 5 === 0) {
+        await updateScore(5);
       }
     }
   };
@@ -99,10 +95,12 @@ export default function ArrastraLaImagen() {
         Relaciona el objeto con su nombre en Inglés
       </Typography>
 
-      {/* Mostrar puntuación */}
-      <Typography variant="subtitle1" align="center" color="#424242" gutterBottom>
-        Puntuación general: {puntuacion}
-      </Typography>
+      {/* Mostrar puntuación si el usuario está logueado */}
+      {isLoggedIn && (
+        <Typography variant="subtitle1" align="center" color="#424242" gutterBottom>
+          Puntuación general: {currentUser?.puntaje || 0}
+        </Typography>
+      )}
 
       {/* El botón de 'Nueva ronda' se oculta si la ronda ya está completada */}
       {!rondaCompletada && (
@@ -187,7 +185,7 @@ export default function ArrastraLaImagen() {
                   ¡Ronda Completada! 🎉
               </Typography>
 
-              {puntuacion >= 1 ? (
+              {currentUser?.puntaje >= 5 ? (
                   // Opción 1: Desbloqueado el siguiente nivel
                   <Link to="/AdivinaDia" style={{ textDecoration: 'none', width: '100%', maxWidth: '300px' }}>
                       <Button
@@ -206,7 +204,7 @@ export default function ArrastraLaImagen() {
               ) : (
                   // Opción 2: Necesita más puntos
                   <Typography variant="body1" color="textSecondary" align="center">
-                      ¡Sigue jugando! Necesitas alcanzar una puntuación de 1 para desbloquear el siguiente nivel.
+                      ¡Sigue jugando! Necesitas alcanzar una puntuación de 5 para desbloquear el siguiente nivel.
                   </Typography>
               )}
               

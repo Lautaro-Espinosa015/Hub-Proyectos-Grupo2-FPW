@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom"; // Necesario para la navegación a "/juegomemoria-nivel2"
+import { useAutorizacion } from "../../../Contexts/AutorizacionContext";
 
 // Importación de imágenes para el juego
 import rojo from "../../../assets/Img/Img_P1-Estrada/rojo.jpg";
@@ -30,23 +31,15 @@ const mezclarCartas = () => {
 };
 
 function JuegoMemoria() {
+  const { currentUser, updateScore, isLoggedIn } = useAutorizacion();
   // Estados principales del juego
   const [cartas, setCartas] = useState(mezclarCartas());
   const [seleccionadas, setSeleccionadas] = useState([]); // Índices seleccionados
   const [acertadas, setAcertadas] = useState([]); // IDs (1-6) acertados
-  const [puntuacion, setPuntuacion] = useState(0); // Puntuación ACUMULADA (general)
   const [puntoGanadoEnPartida, setPuntoGanadoEnPartida] = useState(false); // Bandera para evitar doble suma
 
   // Condición de victoria: 6 IDs acertados (hay 6 imágenes únicas)
   const haGanado = acertadas.length === imagenes.length;
-
-  // 1. Cargar puntuación guardada desde localStorage al iniciar
-  useEffect(() => {
-    const puntuacionGuardada = localStorage.getItem("puntuacionMemoria");
-    if (puntuacionGuardada) {
-      setPuntuacion(parseInt(puntuacionGuardada));
-    }
-  }, []);
 
   // 2. Lógica para verificar si dos cartas seleccionadas son iguales
   useEffect(() => {
@@ -66,18 +59,17 @@ function JuegoMemoria() {
 
 
   // 3. LÓGICA CLAVE: Asignar 1 punto AL GANAR la partida
-  useEffect(() => {
+  useEffect( () => {
+    const gestionarPunto = async () => {
       // Si la partida ha terminado Y el punto aún no ha sido sumado
       if (haGanado && !puntoGanadoEnPartida) {
-          const nuevaPuntuacion = puntuacion + 1;
-          setPuntuacion(nuevaPuntuacion);
-          // Guardar la nueva puntuación en localStorage
-          localStorage.setItem("puntuacionMemoria", nuevaPuntuacion);
-          
+          await updateScore(10); // Otorgar 10 puntos al ganar
           // Marcar el punto como ganado para evitar sumas duplicadas en futuros renders
           setPuntoGanadoEnPartida(true);
       }
-  }, [haGanado, puntuacion, puntoGanadoEnPartida]); // Se ejecuta cuando haGanado o puntuacion cambia
+    }
+    gestionarPunto();
+  }, [haGanado, puntoGanadoEnPartida, updateScore]); // Se ejecuta cuando haGanado cambia
 
   // Manejar clic en carta
   const manejarClick = (index) => {
@@ -96,32 +88,16 @@ function JuegoMemoria() {
     setPuntoGanadoEnPartida(false); // Habilitar la bandera para poder ganar un punto en la nueva partida
   };
 
-  // 5. Resetear la PUNTUACIÓN GENERAL (Borra todo)
-  const resetearPuntuacionTotal = () => {
-    reiniciarPartidaActual(); 
-    setPuntuacion(0);
-    localStorage.removeItem("puntuacionMemoria");
-  };
-
   return (
     <div style={{ backgroundColor: '#e3f2fd', borderRadius: '15px', padding: '2rem', marginTop: '2rem', textAlign: 'center' }}>
       
       {/* Título y Puntuación */}
       <h2 style={{ color: '#1A237E' }}>Juego de Memoria: busca a RED, KEY, KITTEN, PUPPY, YELLOW y TEDDY</h2>
-      <div style={{ marginBottom: '1rem', color: '#1A237E', fontWeight: 'bold' }}>
-        Puntuación general: {puntuacion}
-      </div>
-
-      {/* Botón para reiniciar la puntuación general */}
-      <button
-        onClick={resetearPuntuacionTotal}
-        style={{
-          backgroundColor: '#90CAF9', color: '#1A237E', border: 'none',
-          padding: '0.5rem 1rem', borderRadius: '5px', marginBottom: '1.5rem', cursor: 'pointer'
-        }}
-      >
-        Reiniciar Puntuación General
-      </button>
+      {isLoggedIn && (
+        <div style={{ marginBottom: '1rem', color: '#1A237E', fontWeight: 'bold' }}>
+          Puntuación general: {currentUser?.puntaje || 0}
+        </div>
+      )}
 
       {/* Contenedor de cartas en grilla fija 3x4 */}
       <div
@@ -176,7 +152,7 @@ function JuegoMemoria() {
 
             {/* ** BOTÓN CLAVE: Siguiente Juego ** */}
             {/* Aparece SOLO si la Puntuación General es >= 1 */}
-            {puntuacion >= 1 && ( 
+            {currentUser?.puntaje >= 20 && ( 
               <Link to="/QuizSimulator" style={{ textDecoration: 'none' }}> 
                 <button
                   style={{

@@ -4,6 +4,7 @@ import "../../../assets/Css/BodyClickGame.css";
 // Importaciones para la pantalla de Fin de Juego
 import { Container, Typography, Box, Button, Stack } from '@mui/material';
 import { Link } from 'react-router-dom';
+import { useAutorizacion } from "../../../Contexts/AutorizacionContext";
 import ReplayIcon from '@mui/icons-material/Replay';
 
 import headImg from "../../../assets/Img/ImgEnglishGames/BodyClickGame/head.png";
@@ -15,12 +16,13 @@ import legImg from "../../../assets/Img/ImgEnglishGames/BodyClickGame/leg.png";
 import footImg from "../../../assets/Img/ImgEnglishGames/BodyClickGame/foot.png";
 
 export default function BodyDragGame() {
+  const { currentUser, updateScore, isLoggedIn } = useAutorizacion();
   const [score, setScore] = useState(0);
   const [placedParts, setPlacedParts] = useState({});
   const referenciaAudio = useRef(null);
 
   const bodyParts = [
-    { id: "head", etiquetaEs: "Cabeza", x: "50%", y: "60%", width: "100px", height: "100px" },
+    { id: "body", etiquetaEs: "cuerpo", x: "50%", y: "60%", width: "100px", height: "100px" },
     { id: "eye", etiquetaEs: "Ojo", x: "50%", y: "45%", width: "70px", height: "60px" },
     { id: "mouth", etiquetaEs: "Boca", x: "50%", y: "53%", width: "70px", height: "50px" },
     { id: "arm", etiquetaEs: "Brazo", x: "40%", y: "60%", width: "100px", height: "100px" },
@@ -30,7 +32,7 @@ export default function BodyDragGame() {
   ];
 
   const images = {
-    head: headImg,
+    body: headImg,
     eye: eyeImg,
     mouth: mouthImg,
     arm: armImg,
@@ -47,12 +49,13 @@ export default function BodyDragGame() {
     evento.preventDefault();
   };
 
-  const soltarParte = (evento, idCasillero) => {
+  const soltarParte = async (evento, idCasillero) => {
     evento.preventDefault();
     const idArrastrado = evento.dataTransfer.getData("text/plain");
     if (idArrastrado === idCasillero && !placedParts[idCasillero]) {
       setPlacedParts((prev) => ({ ...prev, [idCasillero]: true }));
       setScore((prev) => prev + 1);
+      await updateScore(15); // Otorgar 15 puntos por cada acierto
     }
   };
     
@@ -70,7 +73,7 @@ export default function BodyDragGame() {
         return (
           <Container maxWidth="sm" sx={{ py: 6, textAlign: 'center', bgcolor: '#e3f2fd', minHeight: "100vh", display: "flex", flexDirection: "column", justifyContent: "center" }}>
             <Typography variant="h3" color="#1A237E" fontWeight="bold" gutterBottom>
-              ¡Nivel Completo! 🎉
+             ¡Nivel Completo! 🎉
             </Typography>
             <Typography variant="h5" sx={{ mb: 4, color: '#424242' }}>
               Completaste todas las partes: **{score} de {totalParts}**
@@ -105,6 +108,11 @@ export default function BodyDragGame() {
       <p className="text-xl mb-4" style={{ color: "#1A237E" }}>
         Arrastra cada parte del cuerpo a su posición correcta
       </p>
+      {isLoggedIn && (
+        <p className="text-lg mt-4" style={{ color: "#424242", fontWeight: 'bold' }}>
+          Puntaje Total: {currentUser?.puntaje || 0}
+        </p> 
+      )}
 
       {/* Silueta con casilleros */}
       <div
@@ -186,7 +194,7 @@ export default function BodyDragGame() {
         )}
       </div>
 
-      <p className="text-lg mt-4" style={{ color: "#424242" }}>Puntos: {score}</p> 
+      <p className="text-lg mt-4" style={{ color: "#424242" }}>Aciertos en esta partida: {score}</p> 
     </div>
   );
 }

@@ -85,5 +85,35 @@ routes.post('/login', async (req, res) => {
   }
 });
 
+// PUT /api/usuarios/update-score
+// Acumula el puntaje para un usuario y devuelve el usuario actualizado.
+routes.put('/update-score', async (req, res) => {
+  const { userId, points } = req.body;
+
+  if (!userId || points === undefined) {
+    return res.status(400).json({ success: false, message: 'Se requiere userId y points.' });
+  }
+
+  try {
+    // Usamos $inc para sumar el valor de 'points' al campo 'puntaje' existente.
+    // { new: true } asegura que MongoDB nos devuelva el documento ya actualizado.
+    const updatedUser = await listaUsuarios.findByIdAndUpdate(
+      userId,
+      { $inc: { puntaje: points } },
+      { new: true }
+    ).select('-password'); // Excluimos el password del objeto que se devuelve
+
+    if (!updatedUser) {
+      return res.status(404).json({ success: false, message: 'Usuario no encontrado.' });
+    }
+
+    // Devolvemos el usuario completo y actualizado para que el frontend pueda sincronizar su estado.
+    res.json({ success: true, user: updatedUser });
+  } catch (error) {
+    console.error('Error al actualizar el puntaje:', error);
+    res.status(500).json({ success: false, message: 'Error del servidor.' });
+  }
+});
+
 // Exportamos las rutas para que puedan ser usadas por 'server.js'.
 module.exports = routes;
