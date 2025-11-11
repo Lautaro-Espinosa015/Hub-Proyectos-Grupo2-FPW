@@ -203,7 +203,7 @@ export default function ConversationalSimulator() {
             elevation={2}
             sx={{
               p: 2,
-              bgcolor: isCharacterSpeaking ? 'primary.light' : 'grey.200', // Resalta si el personaje está hablando
+              bgcolor: isCharacterSpeaking ? 'primary.light' : 'red.200', // Resalta si el personaje está hablando
               color: isCharacterSpeaking ? 'primary.contrastText' : 'text.primary',
               borderRadius: 2,
               minHeight: 80,

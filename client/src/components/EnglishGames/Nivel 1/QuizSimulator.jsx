@@ -12,6 +12,7 @@ import {
     CardContent // Aseguramos la importación de CardContent
 } from '@mui/material';
 import { Link } from 'react-router-dom'; // ** NECESARIO para el botón Siguiente Nivel **
+import { useAutorizacion } from '../../../Contexts/AutorizacionContext';
 import ReplayIcon from '@mui/icons-material/Replay';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CancelIcon from '@mui/icons-material/Cancel';
@@ -65,6 +66,7 @@ const quizData = [
 ];
 
 export default function QuizSimulator() {
+  const { currentUser, updateScore, isLoggedIn } = useAutorizacion();
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [score, setScore] = useState(0);
   const [feedback, setFeedback] = useState({ type: '', message: '' }); // type: 'correct' | 'incorrect'
@@ -90,13 +92,14 @@ export default function QuizSimulator() {
     }
   }, [currentQuestionIndex, playSound, currentQuestion]);
 
-  const handleOptionClick = (option) => {
+  const handleOptionClick = async (option) => {
     if (isAnswering) return;
 
     setIsAnswering(true);
     playSound(option.optionAudio, () => {
       if (option.isCorrect) {
         setScore(prev => prev + 1);
+        updateScore(10); // Sumar 10 puntos al puntaje global
         setFeedback({ type: 'correct', message: '¡Correcto!' });
         playSound(audioCorrect, () => {
           setTimeout(() => {
@@ -184,7 +187,12 @@ export default function QuizSimulator() {
         <Typography variant="h4" component="h1" gutterBottom fontWeight="bold" color="#1A237E">
           Quiz de Vocabulario
         </Typography>
-        <Chip label={`Puntaje: ${score}`} sx={{ mb: 3, fontSize: '1rem', bgcolor: '#BBDEFB', color: '#1A237E' }} />
+        {isLoggedIn && (
+          <Chip 
+            label={`Puntaje Total: ${currentUser?.puntaje || 0}`} 
+            sx={{ mb: 3, fontSize: '1rem', bgcolor: '#BBDEFB', color: '#1A237E' }} 
+          />
+        )}
 
         {/* Sección de la Pregunta */}
         <Box sx={{ mb: 4, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>

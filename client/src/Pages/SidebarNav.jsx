@@ -341,7 +341,16 @@ function SidebarNav({ onLoginClick }) {
               <ListItemIcon sx={{ minWidth: 'auto', justifyContent: 'center' }}>
                 <Logout />
               </ListItemIcon>
-              <ListItemText primary={`Salir (${currentUser.username})`} primaryTypographyProps={{ variant: 'caption', noWrap: true }} />
+              <ListItemText 
+                primary={
+                  <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                    <Typography variant="caption" noWrap>{`Salir (${currentUser.username})`}</Typography>
+                    <Typography variant="caption" noWrap sx={{ fontWeight: 'bold', color: 'secondary.main' }}>
+                      Puntaje: {currentUser?.puntaje || 0}
+                    </Typography>
+                  </Box>
+                } 
+              />
             </ListItemButton>
           </ListItem>
         ) : (

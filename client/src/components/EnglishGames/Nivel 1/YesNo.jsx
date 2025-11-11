@@ -12,6 +12,7 @@ import Alert from "@mui/material/Alert";
 
 // --- Importaciones Adicionales ---
 import { Link } from 'react-router-dom'; // Importación necesaria para el cambio de nivel
+import { useAutorizacion } from "../../../Contexts/AutorizacionContext";
 import ReplayIcon from '@mui/icons-material/Replay'; // Para el botón de reinicio
 // ----------------------------------
 
@@ -32,6 +33,7 @@ export default function YesNoGame() {
     { img: ballImg, english: "Is this a cat?", spanish: "¿Esto es un gato?", correct: false },
   ];
 
+  const { currentUser, updateScore, isLoggedIn } = useAutorizacion();
   const [step, setStep] = useState(0);
   const [feedback, setFeedback] = useState("");
   const [feedbackType, setFeedbackType] = useState("success");
@@ -50,7 +52,7 @@ export default function YesNoGame() {
     audioRef.current.onended = onEndedCallback;
   }, []);
 
-  const handleAnswer = (answer) => {
+  const handleAnswer = async (answer) => {
     if (isAnswering) return;
 
     setIsAnswering(true);
@@ -60,6 +62,7 @@ export default function YesNoGame() {
       setFeedbackType("success");
       setFeedback("¡Muy bien! / Great job!");
       setScore((prev) => prev + 1);
+      await updateScore(10); // Sumar 10 puntos al puntaje global
       playSound(audioCorrect, () => {
         setFeedback("");
         
@@ -243,23 +246,25 @@ export default function YesNoGame() {
         </Card>
 
         {/* Contador de puntos modular */}
-        <Box
-          sx={{
-            mt: 4,
-            p: 2,
-            backgroundColor: "#F5F5F5", 
-            border: "2px solid #BBDEFB", 
-            borderRadius: "12px",
-            textAlign: "center",
-            color: "#424242", 
-            fontSize: "18px",
-            fontWeight: "bold",
-            width: "fit-content",
-            mx: "auto"
-          }}
-        >
-          Puntos acumulados: {score}
-        </Box>
+        {isLoggedIn && (
+          <Box
+            sx={{
+              mt: 4,
+              p: 2,
+              backgroundColor: "#F5F5F5", 
+              border: "2px solid #BBDEFB", 
+              borderRadius: "12px",
+              textAlign: "center",
+              color: "#424242", 
+              fontSize: "18px",
+              fontWeight: "bold",
+              width: "fit-content",
+              mx: "auto"
+            }}
+          >
+            Puntaje Total: {currentUser?.puntaje || 0}
+          </Box>
+        )}
       </Container>
     </Box>
   );

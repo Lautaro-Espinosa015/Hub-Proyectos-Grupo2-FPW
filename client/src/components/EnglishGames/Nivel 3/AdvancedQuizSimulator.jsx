@@ -4,6 +4,7 @@ import ReplayIcon from '@mui/icons-material/Replay';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CancelIcon from '@mui/icons-material/Cancel';
 import LightbulbIcon from '@mui/icons-material/Lightbulb';
+import { useAutorizacion } from '../../../Contexts/AutorizacionContext';
 
 // --- Assets ---
 import characterAvatar from '../../../assets/Img/ImgEnglishGames/ConversationalSimulator/character_avatar.png';
@@ -33,7 +34,7 @@ const advancedQuizData = [
     questionAudio: audioFlagQuestion,
     options: [
       { optionText: "Red, White, and Blue", optionAudio: audioFlagOptionRedWhiteBlue, isCorrect: false },
-      { optionText: "Blue, White, and Blue (with a sun)", optionAudio: audioFlagOptionBlueWhite, isCorrect: true },
+      { optionText: "Sky Blue, White, and Sky Blue (with a sun)", optionAudio: audioFlagOptionBlueWhite, isCorrect: true },
       { optionText: "Green and Yellow", optionAudio: audioFlagOptionGreenYellow, isCorrect: false },
     ],
     hint: "It has a sun in the middle."
@@ -61,21 +62,13 @@ const advancedQuizData = [
 ];
 
 export default function AdvancedQuizSimulator() {
+  const { currentUser, updateScore, isLoggedIn } = useAutorizacion();
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [score, setScore] = useState(0); // Puntuación de la sesión actual
-  const [puntuacionGeneral, setPuntuacionGeneral] = useState(0); // Puntuación persistente
   const [feedback, setFeedback] = useState({ type: '', message: '' });
   const [isAnswering, setIsAnswering] = useState(false);
   const [gameOver, setGameOver] = useState(false);
   const [showHint, setShowHint] = useState(false);
-
-  // Cargar puntuación general desde localStorage al iniciar
-  useEffect(() => {
-    const puntuacionGuardada = localStorage.getItem("puntuacionAdvancedQuiz");
-    if (puntuacionGuardada) {
-      setPuntuacionGeneral(parseInt(puntuacionGuardada, 10));
-    }
-  }, []);
 
   const audioRef = useRef(new Audio());
   const currentQuestion = advancedQuizData[currentQuestionIndex];
@@ -102,22 +95,19 @@ export default function AdvancedQuizSimulator() {
     setShowHint(false);
   }, [currentQuestionIndex, playSound, currentQuestion]);
 
-  const handleOptionClick = (option) => {
+  const handleOptionClick = async (option) => {
     if (isAnswering) return;
 
     setIsAnswering(true);
 
-    const processResult = () => {
+    const processResult = async () => {
       if (option.isCorrect) {
         setScore(prev => prev + 1);
-        // Actualizar y guardar la puntuación general
-        const nuevaPuntuacion = puntuacionGeneral + 1;
-        setPuntuacionGeneral(nuevaPuntuacion);
-        localStorage.setItem("puntuacionAdvancedQuiz", nuevaPuntuacion);
+        await updateScore(25); // Otorgar 25 puntos por acierto
 
         setFeedback({ type: 'correct', message: '¡Excelente!' });
         playSound(audioCorrect, () => {
-          setTimeout(() => {
+          setTimeout(async () => {
             const nextIndex = currentQuestionIndex + 1;
             if (nextIndex < advancedQuizData.length) {
               setCurrentQuestionIndex(nextIndex);
@@ -139,7 +129,7 @@ export default function AdvancedQuizSimulator() {
       }
     };
 
-    playSound(option.optionAudio, processResult);
+    await playSound(option.optionAudio, processResult);
   };
 
   const handleRestartGame = () => {
@@ -183,7 +173,9 @@ export default function AdvancedQuizSimulator() {
         <Typography variant="h4" component="h1" gutterBottom fontWeight="bold" color="primary">
           Quiz Interactivo
         </Typography>
-        <Chip label={`Puntuación General: ${puntuacionGeneral}`} color="secondary" sx={{ mb: 2, fontSize: '1rem' }} />
+        {isLoggedIn && (
+          <Chip label={`Puntuación General: ${currentUser?.puntaje || 0}`} color="secondary" sx={{ mb: 2, fontSize: '1rem' }} />
+        )}
 
         <Box sx={{ mb: 3, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
           <Box
@@ -205,7 +197,7 @@ export default function AdvancedQuizSimulator() {
                 width: 180,
                 height: 180,
                 objectFit: 'contain',
-                border: '2px solid #ddd',
+                border: '2px solid #fd88eeff',
                 borderRadius: 2,
                 p: 1,
                 mb: 2
